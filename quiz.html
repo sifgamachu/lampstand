@@ -383,6 +383,14 @@ $('sGo').addEventListener('click', () => {
   beginQuestions();
 });
 $('sSkip').addEventListener('click', () => { track('sentence_skip'); beginQuestions(); });
+/* deep link from the landing hero: open directly on the sentence step */
+if(location.hash === '#sentence'){
+  const n = getNiche();
+  if(n){ if(n.who) sWho.textContent = n.who; if(n.what) sWhat.textContent = n.what; }
+  showScreen('sScreen');
+  setTimeout(() => { if(!sWho.textContent) sWho.focus(); }, 60);
+  track('start_direct');
+}
 $('retryBtn').addEventListener('click', () => { reset(); cur = 0; renderQ(); track('retry'); });
 
 function finish(){
