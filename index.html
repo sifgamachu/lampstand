@@ -1044,41 +1044,6 @@ try{
     ys.hidden = false;
   }
 }catch(e){}
-    if(who && what && !document.getElementById('ysNext')){
-      const a = document.createElement('a');
-      a.id = 'ysNext'; a.href = '/quiz';
-      a.textContent = 'Now find whose voice in Scripture shares it \u2192';
-      a.style.cssText = 'display:inline-block;margin-top:10px;font-size:13.5px;font-weight:600;color:var(--brass-deep);text-decoration:underline;text-underline-offset:4px';
-      ys.appendChild(a);
-    }
-  }
-}
-tryBtn.addEventListener('click', () => {
-  mine = true; stopType = true;               // halt the demo
-  callingCard.classList.add('mine');
-  c1.style.display='none'; c2.style.display='none';
-  [whoEl, whatEl].forEach((el,i) => {
-    el.textContent = '';
-    el.setAttribute('contenteditable','true');
-    el.setAttribute('role','textbox');
-    el.setAttribute('aria-label', i ? 'the message you carry' : 'who you are called to reach');
-    el.setAttribute('data-ph', i ? 'God\u2019s unconditional love' : 'young people drifting from faith');
-    el.addEventListener('input', renderSentence);
-    el.addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); (i ? document.querySelector('#join .cta') : whatEl).focus(); if(!i) placeCaret(whatEl); } });
-  });
-  whoEl.focus(); placeCaret(whoEl);
-  tryBtn.textContent = 'Saved \u2014 it carries into the quiz & the app';
-  tryBtn.disabled = true; tryBtn.style.opacity = .7; tryBtn.style.cursor = 'default';
-});
-function placeCaret(el){ const r=document.createRange(); r.selectNodeContents(el); r.collapse(false); const s=getSelection(); s.removeAllRanges(); s.addRange(r); }
-/* restore a previously written sentence */
-try{
-  const saved = JSON.parse(localStorage.getItem('lampstand_niche')||'null');
-  if(saved && (saved.who || saved.what)){
-    ysText.textContent = '\u201CGod has called me to reach ' + (saved.who||'\u2026') + ' with the message of ' + (saved.what||'\u2026') + '.\u201D';
-    ys.hidden = false;
-  }
-}catch(e){}
 
 /* ---- premium interactive layer ---- */
 /* scroll progress wick */
@@ -1202,6 +1167,6 @@ document.getElementById('joinForm').addEventListener('submit', async e => {
 </script>
 <!-- Analytics: after deploy, drop in Plausible/Umami here, e.g.
 <script defer data-domain="yourdomain.com" src="https://plausible.io/js/script.js"></script>
-Key events worth tracking: tryIt click, watchBtn click, joinForm submit. -->
+Key events worth tracking: hero "Say your sentence" click, watchBtn click, joinForm submit, quiz sentence step. -->
 </body>
 </html>
