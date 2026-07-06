@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy — Lampstand</title>
+<meta name="description" content="How Lampstand handles your data — plainly.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#FCF8EC">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 26'%3E%3Cpath d='M11 1C11 1 4 8 4 15a7 7 0 0014 0c0-3-2-5-3-7-1 2-2 3-3.5 3C10 11 12 6 11 1z' fill='%23B8862C'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,500;9..144,1,400&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--ink:#FCF8EC;--papyrus:#33291A;--flax:#6E5E3E;--flax-dim:#877344;--lamp:#B8862C;--brass-deep:#7C5216;--line:#E0D2AC}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--papyrus);font-family:'Instrument Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(60vw 60vw at 50% 112%,rgba(245,196,105,.25),transparent 62%)}
+a{color:var(--brass-deep)}
+.bar{display:flex;align-items:center;gap:10px;max-width:680px;width:100%;margin:0 auto;padding:24px 22px 0}
+.flame{width:19px;height:23px}
+.bn{font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:var(--papyrus);text-decoration:none}
+main{flex:1;max-width:680px;width:100%;margin:0 auto;padding:44px 22px 70px;position:relative}
+h1{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(28px,5vw,40px);letter-spacing:-.015em;line-height:1.12}
+h1 em{font-style:italic;color:var(--lamp)}
+h2{font-family:'Fraunces',serif;font-weight:500;font-size:19px;margin:34px 0 10px}
+p,li{font-size:15px;line-height:1.7;color:var(--flax);margin-bottom:14px}
+ul{padding-left:20px}
+.small{font-size:12.5px;color:var(--flax-dim)}
+.cta{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(170deg,#E8B54B,#B8862C 45%,#A9761E);color:#1a1204;font-weight:600;font-size:15px;padding:14px 30px;border-radius:999px;text-decoration:none;margin-top:20px}
+footer{text-align:center;padding:22px;font-size:12px;color:var(--flax-dim)}
+</style></head>
+<body>
+<div class="bar"><svg class="flame" viewBox="0 0 22 26" fill="none" aria-hidden="true"><path d="M11 1C11 1 4 8 4 15a7 7 0 0014 0c0-3-2-5-3-7-1 2-2 3-3.5 3C10 11 12 6 11 1z" fill="#B8862C"/></svg><a class="bn" href="/">Lampstand</a></div>
+<main><h1>Privacy, <em>plainly.</em></h1>
+<p class="small">Last updated July 6, 2026 &middot; This page is written to be read, not skimmed past.</p>
+
+<h2>What we collect, and when</h2>
+<p><b>Nothing, until you choose.</b> You can read the whole site and take the entire calling quiz without anything leaving your device &mdash; quiz answers are scored in your browser and stored only in your browser&rsquo;s local storage.</p>
+<p>If you join the waitlist, we store: your <b>email</b>, and &mdash; only if you leave the consent box checked &mdash; your <b>calling sentence</b> (who/what) and your <b>quiz pattern</b>. That&rsquo;s the whole list. No analytics identifiers are attached to it, no tracking pixels, nothing bought or sold.</p>
+
+<h2>The sensitive part, named honestly</h2>
+<p>A quiz result tied to your email is, in privacy-law terms, information about your <b>religious life</b> &mdash; the most protected category of personal data there is, and we treat it that way. It is stored only with your explicit opt-in, used for exactly one thing (starting your Lampstand onboarding where the quiz left off), never shared with anyone, and deleted on request.</p>
+
+<h2>Where it lives</h2>
+<p>In a Supabase (PostgreSQL) database in the United States, locked so that the public key used by this website can <b>write</b> a signup but can never <b>read</b> one back. Only we can read the list.</p>
+
+<h2>Your rights</h2>
+<ul>
+<li><b>Deletion:</b> email us from your signup address with the word &ldquo;delete&rdquo; and your row is removed &mdash; email, sentence, pattern, everything.</li>
+<li><b>Access:</b> ask, and we&rsquo;ll send you exactly what we hold about you (it fits in one sentence).</li>
+<li><b>Withdrawal:</b> ask us to keep your email but drop the pattern/sentence, and we will.</li>
+</ul>
+<p>Contact: the team behind <a href="https://www.youtube.com/@DeepBibleStories" target="_blank" rel="noopener">Deep Bible Stories</a>. A dedicated contact address will appear here at launch.</p>
+
+<h2>What we&rsquo;ll never do</h2>
+<p>Sell the list. Rent the list. Attach your quiz result to advertising. Or email you more than the launch updates you signed up for. If any of this policy ever changes, the change will be announced to the list before it takes effect &mdash; not buried here.</p>
+<a class="cta" href="/">&larr; Back to Lampstand</a></main>
+<footer>&ldquo;You are the light of the world.&rdquo; &middot; &copy; 2026 Lampstand</footer>
+</body></html>

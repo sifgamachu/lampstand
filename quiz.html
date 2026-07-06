@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Which voice in Scripture shares your calling? — Lampstand</title>
+<meta name="description" content="Seven honest questions. Eight patterns from Scripture. Find the figure whose hesitation — and whose answer from God — sounds like yours.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Lampstand">
+<meta property="og:title" content="Which voice in Scripture shares your calling?">
+<meta property="og:description" content="Seven honest questions. The way you hesitate might be the way Moses did — and God already answered it.">
+<meta property="og:image" content="/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#FCF8EC">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 26'%3E%3Cpath d='M11 1C11 1 4 8 4 15a7 7 0 0014 0c0-3-2-5-3-7-1 2-2 3-3.5 3C10 11 12 6 11 1z' fill='%23B8862C'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,500;9..144,0,600;9..144,1,400;9..144,1,500&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --pitch:#2A2114; --ink:#FCF8EC; --clay:#F6EEDA;
+  --line:#E0D2AC; --line-soft:#E9DDBE;
+  --papyrus:#33291A; --flax:#6E5E3E; --flax-dim:#877344;
+  --lamp:#B8862C; --brass:#A9761E; --brass-deep:#7C5216;
+  --terra:#B05A32; --olive:#6F8148; --lamp-soft:rgba(184,134,44,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{background:var(--ink); color:var(--papyrus); font-family:'Instrument Sans',system-ui,sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden; display:flex; flex-direction:column}
+::selection{background:var(--brass); color:#FFF8E6}
+body::before{content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(60vw 60vw at 50% 112%, rgba(245,196,105,.30), transparent 62%),
+    radial-gradient(55vw 55vw at 12% -6%, rgba(231,178,90,.16), transparent 58%),
+    radial-gradient(120vw 100vw at 50% 50%, transparent 45%, rgba(146,116,60,.08) 100%);}
+body::after{content:""; position:fixed; inset:0; pointer-events:none; z-index:99; opacity:.055; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+a{color:inherit; text-decoration:none}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--papyrus); outline-offset:3px; border-radius:6px}
+
+/* top bar */
+.bar{position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; max-width:760px; width:100%; margin:0 auto; padding:22px 22px 0}
+.brand{display:flex; align-items:center; gap:10px}
+.flame{width:19px;height:23px; filter:drop-shadow(0 0 8px rgba(196,144,48,.4))}
+.brand-name{font-family:'Fraunces',serif; font-size:17px; font-weight:600}
+.bar a.back{font-size:12.5px; color:var(--flax); text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--line)}
+.bar a.back:hover{color:var(--papyrus)}
+
+/* progress */
+.prog{max-width:760px; width:100%; margin:20px auto 0; padding:0 22px; position:relative; z-index:2}
+.prog-track{height:3px; border-radius:3px; background:var(--line-soft); overflow:hidden}
+.prog-fill{height:100%; width:0; border-radius:3px; background:linear-gradient(90deg,var(--lamp),var(--brass)); transition:width .45s cubic-bezier(.2,.7,.3,1); box-shadow:0 0 8px rgba(184,134,44,.4)}
+.prog-cap{margin-top:9px; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--flax-dim); display:flex; justify-content:space-between}
+
+/* stage */
+.stage{flex:1; display:flex; align-items:center; justify-content:center; position:relative; z-index:1; padding:28px 22px 56px}
+.card{width:100%; max-width:640px}
+.screen{display:none}
+.screen.on{display:block; animation:rise .5s cubic-bezier(.2,.7,.3,1)}
+@keyframes rise{from{opacity:0; transform:translateY(18px)}to{opacity:1; transform:none}}
+
+.ey{font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--lamp); font-weight:600; margin-bottom:18px; display:flex; align-items:center; gap:10px}
+.ey::before{content:""; width:26px; height:1px; background:var(--brass-deep)}
+h1,.qh{font-family:'Fraunces',serif; font-weight:500; letter-spacing:-.015em; line-height:1.12}
+h1{font-size:clamp(30px,5.5vw,46px)}
+h1 em{font-style:italic; color:var(--lamp)}
+.qh{font-size:clamp(23px,3.8vw,32px); margin-bottom:8px}
+.sub{margin-top:16px; font-size:15px; line-height:1.68; color:var(--flax)}
+.sub b{color:var(--papyrus); font-weight:600}
+.mirror{margin-top:22px; border-left:3px solid var(--brass-deep); padding:4px 0 4px 16px; font-family:'Fraunces',serif; font-style:italic; font-size:15px; line-height:1.6; color:var(--brass-deep)}
+.hint{margin-top:6px; margin-bottom:22px; font-size:13px; color:var(--flax-dim)}
+
+/* answers */
+.opts{display:flex; flex-direction:column; gap:11px; margin-top:26px}
+.opt{appearance:none; text-align:left; cursor:pointer; font-family:inherit; font-size:15px; line-height:1.5; color:var(--papyrus); background:rgba(255,253,245,.85); border:1px solid var(--line); border-radius:14px; padding:16px 18px; display:flex; gap:13px; align-items:flex-start; transition:border-color .18s, background .18s, transform .15s}
+.opt:hover{border-color:var(--brass); transform:translateX(3px)}
+.opt:active{transform:translateX(3px) scale(.99)}
+.opt .dot{flex:none; width:17px; height:17px; margin-top:2px; border-radius:50%; border:1.5px solid var(--brass-deep); transition:all .15s}
+.opt:hover .dot{border-color:var(--lamp); box-shadow:0 0 0 4px var(--lamp-soft)}
+
+/* buttons */
+.cta{appearance:none; border:none; cursor:pointer; background:linear-gradient(170deg,#E8B54B 0%,var(--lamp) 45%,var(--brass) 100%); color:#1a1204; font-family:inherit; font-size:15.5px; font-weight:600; padding:16px 34px; border-radius:999px; display:inline-flex; align-items:center; gap:10px; transition:transform .15s, filter .2s, box-shadow .2s; box-shadow:0 12px 30px -12px rgba(154,109,30,.5); text-shadow:0 1px 0 rgba(255,246,220,.35)}
+.cta:hover{filter:brightness(1.07); transform:translateY(-2px)}
+.cta:active{transform:translateY(0) scale(.985)}
+.ghost{appearance:none; background:none; border:1px solid var(--line); color:var(--brass-deep); font-family:inherit; font-size:13px; font-weight:600; padding:11px 20px; border-radius:999px; cursor:pointer; transition:border-color .2s}
+.ghost:hover{border-color:var(--brass)}
+.rowcta{display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-top:32px}
+.backq{margin-top:26px; font-size:13px; color:var(--flax-dim); background:none; border:none; cursor:pointer; font-family:inherit; text-decoration:underline; text-underline-offset:3px}
+.backq:hover{color:var(--flax)}
+
+/* result */
+.res-badge{display:inline-flex; align-items:center; gap:9px; font-size:11px; letter-spacing:.18em; text-transform:uppercase; font-weight:600; color:var(--olive); background:rgba(147,162,119,.14); border:1px solid rgba(124,143,86,.4); padding:7px 15px; border-radius:999px; margin-bottom:20px}
+.res-name{font-family:'Fraunces',serif; font-weight:500; font-size:clamp(32px,5.5vw,48px); letter-spacing:-.015em; line-height:1.08}
+.res-name em{font-style:italic; color:var(--lamp)}
+.res-hes{margin-top:20px; font-size:15.5px; line-height:1.7; color:var(--flax)}
+.res-hes b{color:var(--papyrus); font-weight:600}
+.verse-card{margin-top:28px; background:linear-gradient(150deg,rgba(255,253,245,.96),rgba(246,237,214,.96)); border:1px solid var(--line); border-radius:18px; padding:28px; position:relative; overflow:hidden; box-shadow:0 24px 54px -30px rgba(122,95,46,.4)}
+.verse-card::before{content:""; position:absolute; inset:0; background:radial-gradient(70% 100% at 50% 0%, var(--lamp-soft), transparent 68%); pointer-events:none}
+.verse-l{font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--flax-dim); margin-bottom:14px}
+.verse-t{font-family:'Fraunces',serif; font-style:italic; font-size:clamp(19px,2.8vw,24px); line-height:1.6; color:var(--brass-deep)}
+.verse-r{margin-top:12px; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--flax-dim)}
+.res-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px}
+.res-p{border:1px solid var(--line-soft); border-radius:14px; padding:18px; background:rgba(255,255,255,.55)}
+.res-p h4{font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--lamp); font-weight:600; margin-bottom:9px}
+.res-p p{font-size:13.5px; line-height:1.6; color:var(--flax)}
+.res-p p b{color:var(--papyrus); font-weight:600}
+@media (max-width:560px){.res-grid{grid-template-columns:1fr}}
+
+/* join */
+.joinbox{margin-top:30px; border:1px solid var(--line); border-radius:18px; padding:24px; background:rgba(255,253,245,.85)}
+.joinbox h3{font-family:'Fraunces',serif; font-size:19px; font-weight:500; margin-bottom:8px}
+.joinbox h3 em{font-style:italic; color:var(--lamp)}
+.joinbox .jp{font-size:13.5px; line-height:1.6; color:var(--flax)}
+.jform{display:flex; gap:10px; margin-top:16px}
+.jform input{flex:1; background:#FFFDF6; border:1px solid var(--line); border-radius:999px; color:var(--papyrus); font-family:inherit; font-size:14.5px; padding:13px 20px; transition:border-color .2s, box-shadow .2s}
+.jform input::placeholder{color:var(--flax-dim)}
+.jform input:focus{outline:none; border-color:var(--brass); box-shadow:0 0 0 3px var(--lamp-soft)}
+.jform .cta{padding:13px 24px; font-size:14px}
+.consent{display:flex; gap:10px; align-items:flex-start; margin-top:13px; font-size:12.5px; line-height:1.55; color:var(--flax-dim); cursor:pointer}
+.consent input{margin-top:2px; accent-color:var(--brass)}
+.jok{display:none; margin-top:14px; font-family:'Fraunces',serif; font-style:italic; font-size:16px; color:var(--brass-deep)}
+.jok.show{display:block; animation:rise .4s ease}
+.jerr{display:none; margin-top:10px; font-size:12.5px; color:var(--terra)}
+@media (max-width:560px){.jform{flex-direction:column}}
+
+footer{position:relative; z-index:1; text-align:center; padding:20px 22px 30px; font-size:12px; color:var(--flax-dim)}
+footer a{text-decoration:underline; text-underline-offset:3px; color:var(--brass-deep)}
+@media (prefers-reduced-motion:reduce){
+  .screen.on{animation:none}
+  .prog-fill{transition:none}
+  .opt,.cta{transition:none}
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <a class="brand" href="/" aria-label="Lampstand home">
+    <svg class="flame" viewBox="0 0 22 26" fill="none" aria-hidden="true"><path d="M11 1C11 1 4 8 4 15a7 7 0 0014 0c0-3-2-5-3-7-1 2-2 3-3.5 3C10 11 12 6 11 1z" fill="#B8862C"/></svg>
+    <span class="brand-name">Lampstand</span>
+  </a>
+  <a class="back" href="/">Back to Lampstand</a>
+</div>
+
+<div class="prog" id="progWrap" hidden>
+  <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+  <p class="prog-cap"><span id="progLabel">Question 1 of 7</span><span>No wrong answers</span></p>
+</div>
+
+<main class="stage">
+  <div class="card">
+
+    <!-- intro -->
+    <section class="screen on" id="intro">
+      <p class="ey">Seven honest questions</p>
+      <h1>Which voice in Scripture shares <em>your</em> calling?</h1>
+      <p class="sub">Almost everyone who feels called also hesitates &mdash; and Scripture is full of people who hesitated <b>exactly the way you do</b>. Seven questions. At the end: the figure whose hesitation sounds like yours, and the answer God already gave it.</p>
+      <p class="mirror">This isn&rsquo;t a verdict on your calling &mdash; it&rsquo;s a mirror to help you name it.</p>
+      <div class="rowcta">
+        <button class="cta" id="startBtn">Begin <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M9 4l4 4-4 4" stroke="#1a1204" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <span style="font-size:12.5px;color:var(--flax-dim)">About 2 minutes &middot; nothing saved unless you choose</span>
+      </div>
+    </section>
+
+    <!-- question -->
+    <section class="screen" id="qScreen" aria-live="polite">
+      <h2 class="qh" id="qTitle"></h2>
+      <p class="hint" id="qHint"></p>
+      <div class="opts" id="qOpts" role="group"></div>
+      <button class="backq" id="backBtn" hidden>&larr; Previous question</button>
+    </section>
+
+    <!-- result -->
+    <section class="screen" id="rScreen" aria-live="polite">
+      <span class="res-badge">
+        <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1l2 3.5 4 .6-3 2.8.7 4L8 12l-3.4 1.9.7-4-3-2.8 4-.6L8 1z" stroke="#6F8148" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        Your pattern
+      </span>
+      <h2 class="res-name" id="rName"></h2>
+      <p class="res-hes" id="rHes"></p>
+      <div class="verse-card">
+        <p class="verse-l">God&rsquo;s answer to that hesitation</p>
+        <p class="verse-t" id="rVerse"></p>
+        <p class="verse-r" id="rRef"></p>
+      </div>
+      <div class="res-grid">
+        <div class="res-p"><h4>Your strength</h4><p id="rStr"></p></div>
+        <div class="res-p"><h4>What your channel could sound like</h4><p id="rSound"></p></div>
+      </div>
+      <p class="mirror">This isn&rsquo;t a verdict on your calling &mdash; it&rsquo;s a mirror to help you name it. Scripture&rsquo;s people aren&rsquo;t personality types; but the way they hesitated, and the way God answered, might sound familiar.</p>
+
+      <div class="joinbox">
+        <h3>Your calling deserves a <em>voice.</em></h3>
+        <p class="jp">Lampstand turns a calling like yours into a daily YouTube Short &mdash; scripts in your voice, recording guidance, and soon the editing and publishing too. From the ministry behind Deep Bible Stories From the team behind Deep Bible Stories (700,000+ subscribers).mdash; watched by 80 million on YouTube.</p>
+        <form class="jform" id="jForm" novalidate>
+          <label for="jEmail" style="position:absolute;left:-9999px">Email address</label>
+          <input type="email" id="jEmail" placeholder="you@example.com" autocomplete="email" required>
+          <button class="cta" type="submit">Join the first circle</button>
+        </form>
+        <label class="consent"><input type="checkbox" id="jConsent" checked>
+          Save my result (<span id="cName">this pattern</span>) with my email so onboarding starts where this left off. Optional &mdash; uncheck and we keep only your email. Deletable anytime.</label>
+        <p class="jok" id="jOk">Received. Keep the flame ready &mdash; we&rsquo;ll write soon.</p>
+        <p class="jerr" id="jErr">That didn&rsquo;t go through &mdash; mind trying once more?</p>
+      </div>
+
+      <div class="rowcta">
+        <button class="ghost" id="shareBtn">Share your pattern</button>
+        <button class="ghost" id="retryBtn">Take it again</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>&ldquo;No one lights a lamp and puts it under a basket.&rdquo; &middot; <a href="/">Lampstand</a> &middot; from the team behind <a href="https://www.youtube.com/@DeepBibleStories" target="_blank" rel="noopener">Deep Bible Stories</a></footer>
+
+<script>
+/* ============ data ============ */
+const P = {
+  moses:    {name:'The <em>Moses</em> Pattern', plain:'The Moses Pattern',
+    hes:'You feel unequipped in the exact skill the calling requires. You&rsquo;ve caught yourself thinking <b>&ldquo;send someone else &mdash; someone who can actually speak.&rdquo;</b> The conviction is heavy in you; the confidence to voice it isn&rsquo;t.',
+    verse:'&ldquo;Who gave human beings their mouths? &hellip; Now go; I will help you speak and will teach you what to say.&rdquo;', ref:'Exodus 4:11\u201312',
+    str:'Depth. You don&rsquo;t talk about things lightly &mdash; when you finally speak, people feel the <b>weight</b> you&rsquo;ve been carrying.',
+    sound:'Slow, sure, unhurried Shorts. One truth at a time, said plainly &mdash; with a script and teleprompter doing for you what Aaron did for Moses.'},
+  jeremiah: {name:'The <em>Jeremiah</em> Pattern', plain:'The Jeremiah Pattern',
+    hes:'You disqualify yourself by inexperience &mdash; <b>too young, too new, not trained enough</b> &mdash; and you&rsquo;re waiting for a permission that isn&rsquo;t coming. Meanwhile the message sits in you like fire in the bones.',
+    verse:'&ldquo;Do not say, &lsquo;I am too young.&rsquo; &hellip; I have put my words in your mouth.&rdquo;', ref:'Jeremiah 1:7\u20139',
+    str:'Urgency. The message genuinely won&rsquo;t stay in &mdash; that fire is the rarest raw material a channel can have.',
+    sound:'Bold, questioning Shorts that reframe what everyone assumes. Experience is built by daily reps &mdash; not waited for.'},
+  esther:   {name:'The <em>Esther</em> Pattern', plain:'The Esther Pattern',
+    hes:'You already have a platform &mdash; an audience, a position, people&rsquo;s trust &mdash; and using it for faith feels <b>presumptuous</b>, almost like an abuse of the access. So the influence sits there, pointed at everything except the thing that matters most.',
+    verse:'&ldquo;And who knows but that you have come to your position for such a time as this?&rdquo;', ref:'Esther 4:14',
+    str:'Trust already earned. The people you&rsquo;re called to reach already listen to you &mdash; the bridge is built.',
+    sound:'Graceful, personal Shorts that turn an existing platform toward the message &mdash; without torching what you&rsquo;ve built.'},
+  david:    {name:'The <em>David</em> Pattern', plain:'The David Pattern',
+    hes:'Your start feels <b>too small to matter</b>. You compare your empty channel to the established voices and conclude the math is against you &mdash; forgetting that the anointing came in a sheep field nobody was watching.',
+    verse:'&ldquo;People look at the outward appearance, but the LORD looks at the heart.&rdquo;', ref:'1 Samuel 16:7',
+    str:'Faithfulness in obscurity &mdash; the exact muscle every lasting channel is built on. You already practice it.',
+    sound:'Honest, consistent Shorts. Streaks over stats. &ldquo;Obedience over views&rdquo; is not our slogan &mdash; it&rsquo;s your verse.'},
+  paul:     {name:'The <em>Paul</em> Pattern', plain:'The Paul Pattern',
+    hes:'You believe who you <b>were</b> cancels who you&rsquo;re called to be. People know your past &mdash; and you&rsquo;ve concluded that disqualifies your voice, when Scripture&rsquo;s loudest voice said the same thing about himself.',
+    verse:'&ldquo;By the grace of God I am what I am, and his grace to me was not without effect.&rdquo;', ref:'1 Corinthians 15:10',
+    str:'Testimony. Your history isn&rsquo;t the obstacle to the message &mdash; it <b>is</b> the message, with a before and after no critic can argue with.',
+    sound:'Story-first Shorts. &ldquo;I used to&hellip; until&hellip;&rdquo; &mdash; your past is a hook library nobody else can copy.'},
+  deborah:  {name:'The <em>Deborah</em> Pattern', plain:'The Deborah Pattern',
+    hes:'You see clearly and decide quickly &mdash; but you brace against stepping forward where others hesitate, wondering <b>&ldquo;if I lead, will anyone actually follow?&rdquo;</b> Barak wouldn&rsquo;t go without Deborah. She went.',
+    verse:'&ldquo;Village life in Israel ceased &hellip; until I, Deborah, arose, arose a mother in Israel.&rdquo;', ref:'Judges 5:7',
+    str:'Clarity plus courage. People steady around a voice that says the plain thing everyone else is avoiding.',
+    sound:'Bold-contrast Shorts with a spine. Clear stands, said kindly &mdash; a cadence people learn to trust and follow.'},
+  nehemiah: {name:'The <em>Nehemiah</em> Pattern', plain:'The Nehemiah Pattern',
+    hes:'You carry a burden for something broken &mdash; a generation, a community, a rubble you can&rsquo;t stop seeing &mdash; and you freeze at the <b>scale</b> of it. One person, against a whole ruined wall.',
+    verse:'&ldquo;The God of heaven will give us success. We his servants will start rebuilding.&rdquo;', ref:'Nehemiah 2:20',
+    str:'A builder&rsquo;s mind attached to a weeping heart. You see the whole wall <b>and</b> the next brick &mdash; most people see only one.',
+    sound:'Purposeful, series-shaped Shorts. A wall rebuilt one sixty-second section a day &mdash; that&rsquo;s literally the Lampstand pipeline.'},
+  barnabas: {name:'The <em>Barnabas</em> Pattern', plain:'The Barnabas Pattern',
+    hes:'You&rsquo;d rather lift others than be seen &mdash; and you&rsquo;ve quietly filed visibility under <b>vanity</b>. But encouragement is a platform gift: Barnabas is the reason the church trusted Paul at all.',
+    verse:'&ldquo;Joseph &hellip; whom the apostles called Barnabas (which means &lsquo;son of encouragement&rsquo;).&rdquo;', ref:'Acts 4:36',
+    str:'People leave your presence stronger. That&rsquo;s not a supporting role &mdash; at scale, it&rsquo;s a ministry.',
+    sound:'Shorts that end with someone standing taller. You&rsquo;ll master the Response beat &mdash; every video lifts one person, on purpose.'}
+};
+
+const Q = [
+  {t:'When you imagine finally speaking up, what stirs first?', h:'Go with the first honest answer, not the impressive one.', o:[
+    ['A truth I can\u2019t keep carrying silently', {jeremiah:2, moses:1}],
+    ['The faces of specific people who need it', {esther:2, barnabas:1}],
+    ['Something broken I can\u2019t stop thinking about rebuilding', {nehemiah:2, deborah:1}],
+    ['The story of what God brought me through', {paul:2, david:1}]]},
+  {t:'Be honest: what\u2019s actually kept you from starting?', h:'This one counts double \u2014 it\u2019s the heart of the quiz.', o:[
+    ['I\u2019m not a natural speaker / I hate how I sound', {moses:4}],
+    ['I feel too new, too young, or under-qualified', {jeremiah:4}],
+    ['It feels presumptuous \u2014 who am I to teach?', {esther:2, barnabas:2}],
+    ['My past \u2014 people know who I was', {paul:4}],
+    ['The need feels too big for one person', {nehemiah:4}],
+    ['I see what needs saying — I just doubt anyone would follow me', {deborah:4}],
+    ['Starting from zero feels pointless next to the big voices', {david:4}]]},
+  {t:'In a group facing a hard decision, you\u2019re usually the one who\u2026', h:'', o:[
+    ['Feels the weight of it most deeply', {moses:2, jeremiah:1}],
+    ['Quietly makes sure the discouraged person is okay', {barnabas:2, esther:1}],
+    ['Says the clear thing everyone\u2019s avoiding', {deborah:2, paul:1}],
+    ['Starts sketching a plan while others debate', {nehemiah:2, david:1}]]},
+  {t:'Who do you ache for most?', h:'', o:[
+    ['People drowning quietly \u2014 anxiety, doubt, shame', {barnabas:2, paul:1}],
+    ['The next generation drifting from faith', {jeremiah:2, nehemiah:1}],
+    ['People with influence and empty souls', {esther:2, deborah:1}],
+    ['Ordinary, overlooked, faithful people', {david:2, moses:1}]]},
+  {t:'When someone publicly praises you, you\u2026', h:'', o:[
+    ['Deflect it \u2014 fast', {moses:2, barnabas:1}],
+    ['Receive it, then feel the responsibility of it', {esther:2, deborah:1}],
+    ['Think \u201Cif they knew where I started\u2026\u201D', {paul:2, david:1}],
+    ['Immediately think of who helped you get there', {barnabas:2, nehemiah:1}]]},
+  {t:'Your natural way of getting a point across is\u2026', h:'', o:[
+    ['Telling what happened to me', {paul:2, david:1}],
+    ['Asking the question that reframes everything', {jeremiah:2, esther:1}],
+    ['Saying it plainly, even when it costs', {deborah:2, moses:1}],
+    ['Building it step by step until it\u2019s undeniable', {nehemiah:2, barnabas:1}]]},
+  {t:'A year from now, what would tell you this was worth it?', h:'', o:[
+    ['One message: \u201Cyour video is why I didn\u2019t give up\u201D', {barnabas:2, paul:1}],
+    ['I showed up every day, whether anyone watched or not', {david:2, moses:1}],
+    ['People I already reach finally know what I believe', {esther:2, deborah:1}],
+    ['Something broken started visibly mending', {nehemiah:2, jeremiah:1}]]}
+];
+
+/* ============ engine ============ */
+const $ = id => document.getElementById(id);
+const track = (ev, d) => { try{ (window.dataLayer = window.dataLayer||[]).push({event:'lampstand_quiz', step:ev, ...d}); }catch(_){} };
+let cur = -1, answers = [], scores = {};
+
+function reset(){ cur = -1; answers = []; scores = {}; for(const k in P) scores[k]=0; }
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+  const el = $(id); el.classList.add('on');
+  $('progWrap').hidden = id !== 'qScreen';
+  window.scrollTo({top:0, behavior:'auto'});
+}
+function renderQ(){
+  const q = Q[cur];
+  $('qTitle').textContent = q.t;
+  $('qHint').textContent = q.h;
+  $('qHint').style.display = q.h ? '' : 'none';
+  const box = $('qOpts'); box.innerHTML = '';
+  q.o.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'opt';
+    b.innerHTML = '<span class="dot" aria-hidden="true"></span><span>' + opt[0] + '</span>';
+    b.addEventListener('click', () => answer(i));
+    box.appendChild(b);
+  });
+  $('backBtn').hidden = cur === 0;
+  $('progFill').style.width = ((cur) / Q.length * 100) + '%';
+  $('progLabel').textContent = 'Question ' + (cur+1) + ' of ' + Q.length;
+  showScreen('qScreen');
+  track('q' + (cur+1));
+}
+function answer(i){
+  answers[cur] = i;
+  if(cur < Q.length - 1){ cur++; renderQ(); }
+  else finish();
+}
+$('backBtn').addEventListener('click', () => { if(cur > 0){ cur--; renderQ(); } });
+$('startBtn').addEventListener('click', () => { reset(); cur = 0; renderQ(); track('start'); });
+$('retryBtn').addEventListener('click', () => { reset(); cur = 0; renderQ(); track('retry'); });
+
+function finish(){
+  for(const k in P) scores[k] = 0;
+  answers.forEach((ai, qi) => {
+    const w = Q[qi].o[ai][1];
+    for(const k in w) scores[k] += w[k];
+  });
+  let best = Object.keys(P).sort((a,b) => scores[b] - scores[a]);
+  // tie-break: the pattern favored by Q2's answer, then Q4's
+  if(scores[best[0]] === scores[best[1]]){
+    for(const qi of [1,3]){
+      const w = Q[qi].o[answers[qi]][1];
+      const tied = best.filter(k => scores[k] === scores[best[0]]);
+      const pick = tied.find(k => w[k]);
+      if(pick){ best = [pick, ...best.filter(k => k !== pick)]; break; }
+    }
+  }
+  const key = best[0], r = P[key];
+  $('rName').innerHTML = r.name;
+  $('rHes').innerHTML = r.hes;
+  $('rVerse').innerHTML = r.verse;
+  $('rRef').textContent = r.ref;
+  $('rStr').innerHTML = r.str;
+  $('rSound').innerHTML = r.sound;
+  $('cName').textContent = r.plain;
+  $('progFill').style.width = '100%';
+  showScreen('rScreen');
+  window.__pattern = key;
+  try{ localStorage.setItem('lampstand_quiz', JSON.stringify({archetype:key, answers, ts:Date.now()})); }catch(_){ }
+  track('result', {pattern:key});
+  document.title = r.plain + ' \u2014 Lampstand';
+}
+
+/* ============ share ============ */
+$('shareBtn').addEventListener('click', async () => {
+  const r = P[window.__pattern];
+  const text = 'I took Lampstand\u2019s calling quiz \u2014 I carry ' + r.plain + '. ' + r.ref + ' is God\u2019s answer to my hesitation. Which voice shares yours?';
+  const url = location.origin + location.pathname;
+  try{
+    if(navigator.share){ await navigator.share({title:'Lampstand', text, url}); }
+    else{ await navigator.clipboard.writeText(text + ' ' + url); $('shareBtn').textContent = 'Copied \u2014 paste anywhere'; setTimeout(()=>$('shareBtn').textContent='Share your pattern', 2200); }
+    track('share', {pattern:window.__pattern});
+  }catch(_){}
+});
+
+/* ============ waitlist (same table as landing page) ============ */
+const SB_URL = 'https://bwurwqdkxccvmwqhslha.supabase.co';
+const SB_KEY = 'sb_publishable_TY9SuANHZDCpl8q_rVs0SA_DqTvpOP0';
+$('jForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const em = $('jEmail'); $('jErr').style.display = 'none';
+  if(!em.value || !em.checkValidity()){ em.focus(); em.style.borderColor = 'var(--terra)'; setTimeout(()=>em.style.borderColor='', 1600); return; }
+  let niche = null; try{ niche = JSON.parse(localStorage.getItem('lampstand_niche')||'null'); }catch(_){ }
+  const payload = {
+    email: em.value.trim().toLowerCase(),
+    who:  niche && niche.who  || null,
+    what: niche && niche.what || null,
+    archetype: $('jConsent').checked ? (window.__pattern || null) : null,
+    source: 'quiz'
+  };
+  const btn = e.target.querySelector('button'); btn.disabled = true; btn.style.opacity = .7;
+  const succeed = msg => {
+    if(msg) $('jOk').textContent = msg;
+    $('jOk').classList.add('show'); e.target.style.display = 'none';
+    document.querySelector('.consent').style.display = 'none';
+    track('waitlist', {pattern: payload.archetype || 'withheld'});
+  };
+  try{
+    const res = await fetch(SB_URL + '/rest/v1/lampstand_waitlist', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal'},
+      body: JSON.stringify(payload)
+    });
+    if(res.status === 201) succeed();
+    else if(res.status === 409) succeed('You\u2019re already on the list \u2014 keep the flame ready.');
+    else throw new Error('status ' + res.status);
+  }catch(_){
+    btn.disabled = false; btn.style.opacity = '';
+    $('jErr').style.display = 'block';
+  }
+});
+</script>
+</body>
+</html>
