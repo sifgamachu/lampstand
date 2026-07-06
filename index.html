@@ -1049,6 +1049,13 @@ function renderSentence(){
     ysText.textContent = '\u201CGod has called me to reach ' + (who || '\u2026') + ' with the message of ' + (what || '\u2026') + '.\u201D';
     ys.hidden = false;
     try{ localStorage.setItem('lampstand_niche', JSON.stringify({who, what, ts:Date.now()})); }catch(e){}
+    if(who && what && !document.getElementById('ysNext')){
+      const a = document.createElement('a');
+      a.id = 'ysNext'; a.href = '/quiz';
+      a.textContent = 'Now find whose voice in Scripture shares it \u2192';
+      a.style.cssText = 'display:inline-block;margin-top:10px;font-size:13.5px;font-weight:600;color:var(--brass-deep);text-decoration:underline;text-underline-offset:4px';
+      ys.appendChild(a);
+    }
   }
 }
 tryBtn.addEventListener('click', () => {
@@ -1060,12 +1067,12 @@ tryBtn.addEventListener('click', () => {
     el.setAttribute('contenteditable','true');
     el.setAttribute('role','textbox');
     el.setAttribute('aria-label', i ? 'the message you carry' : 'who you are called to reach');
-    el.setAttribute('data-ph', i ? 'what truth?' : 'who?');
+    el.setAttribute('data-ph', i ? 'God\u2019s unconditional love' : 'young people drifting from faith');
     el.addEventListener('input', renderSentence);
     el.addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); (i ? document.querySelector('#join .cta') : whatEl).focus(); if(!i) placeCaret(whatEl); } });
   });
   whoEl.focus(); placeCaret(whoEl);
-  tryBtn.textContent = 'Saved locally \u2014 finish it in the app';
+  tryBtn.textContent = 'Saved \u2014 it carries into the quiz & the app';
   tryBtn.disabled = true; tryBtn.style.opacity = .7; tryBtn.style.cursor = 'default';
 });
 function placeCaret(el){ const r=document.createRange(); r.selectNodeContents(el); r.collapse(false); const s=getSelection(); s.removeAllRanges(); s.addRange(r); }

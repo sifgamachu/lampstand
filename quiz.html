@@ -84,6 +84,14 @@ h1 em{font-style:italic; color:var(--lamp)}
 .cta:active{transform:translateY(0) scale(.985)}
 .ghost{appearance:none; background:none; border:1px solid var(--line); color:var(--brass-deep); font-family:inherit; font-size:13px; font-weight:600; padding:11px 20px; border-radius:999px; cursor:pointer; transition:border-color .2s}
 .ghost:hover{border-color:var(--brass)}
+.sb-sent{font-family:'Fraunces',serif; font-weight:500; font-size:clamp(22px,4.2vw,30px); line-height:1.55; letter-spacing:-.01em; color:var(--papyrus); margin:26px 0 8px}
+.sb-slot{display:inline; border-bottom:2px solid var(--lamp); padding:0 3px 1px; min-width:60px; color:var(--brass-deep); outline:none; transition:background .2s}
+.sb-slot:focus{background:var(--lamp-soft)}
+.sb-slot:empty::before{content:attr(data-ph); color:var(--flax-dim); font-style:italic; font-weight:400}
+.sb-skip{background:none; border:none; font-family:inherit; font-size:13px; color:var(--flax-dim); text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:8px 4px}
+.sb-skip:hover{color:var(--brass-deep)}
+.sb-note{font-size:12.5px; color:var(--terra); margin-top:10px}
+.res-calling{font-family:'Fraunces',serif; font-style:italic; font-size:16.5px; line-height:1.6; color:var(--brass-deep); margin:6px 0 14px}
 .rowcta{display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-top:32px}
 .backq{margin-top:26px; font-size:13px; color:var(--flax-dim); background:none; border:none; cursor:pointer; font-family:inherit; text-decoration:underline; text-underline-offset:3px}
 .backq:hover{color:var(--flax)}
@@ -162,6 +170,19 @@ footer a{text-decoration:underline; text-underline-offset:3px; color:var(--brass
       </div>
     </section>
 
+    <!-- sentence -->
+    <section class="screen" id="sScreen">
+      <p class="ey">Before the questions</p>
+      <h2 class="qh">First, say it <em>plainly.</em></h2>
+      <p class="hint">One sentence. Don&rsquo;t polish it &mdash; just name who you can&rsquo;t stop thinking about, and what you&rsquo;d tell them.</p>
+      <p class="sb-sent">&ldquo;God has called me to reach <span id="sWho" class="sb-slot" contenteditable="true" role="textbox" aria-label="who you are called to reach" data-ph="young people drifting from faith"></span> with the message of <span id="sWhat" class="sb-slot" contenteditable="true" role="textbox" aria-label="the message you carry" data-ph="God&rsquo;s unconditional love"></span>.&rdquo;</p>
+      <div class="rowcta">
+        <button class="cta" id="sGo">That&rsquo;s my sentence &mdash; continue <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M9 4l4 4-4 4" stroke="#1a1204" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="sb-skip" id="sSkip" type="button">I&rsquo;m not sure yet &mdash; let the questions help</button>
+      </div>
+      <p class="sb-note" id="sNote" hidden>Name at least one of the two &mdash; or skip, and write it after your result.</p>
+    </section>
+
     <!-- question -->
     <section class="screen" id="qScreen" aria-live="polite">
       <h2 class="qh" id="qTitle"></h2>
@@ -177,6 +198,7 @@ footer a{text-decoration:underline; text-underline-offset:3px; color:var(--brass
         Your pattern
       </span>
       <h2 class="res-name" id="rName"></h2>
+      <p class="res-calling" id="rCalling" hidden></p>
       <p class="res-hes" id="rHes"></p>
       <div class="verse-card">
         <p class="verse-l">God&rsquo;s answer to that hesitation</p>
@@ -191,7 +213,7 @@ footer a{text-decoration:underline; text-underline-offset:3px; color:var(--brass
 
       <div class="joinbox">
         <h3>Your calling deserves a <em>voice.</em></h3>
-        <p class="jp">Lampstand turns a calling like yours into a daily YouTube Short &mdash; scripts in your voice, recording guidance, and soon the editing and publishing too. From the ministry behind Deep Bible Stories From the team behind Deep Bible Stories (700,000+ subscribers).mdash; watched by 80 million on YouTube.</p>
+        <p class="jp">Lampstand turns a calling like yours into a daily YouTube Short &mdash; scripts in your voice, recording guidance, and soon the editing and publishing too. From the ministry behind Deep Bible Stories &mdash; watched by 80 million on YouTube.</p>
         <form class="jform" id="jForm" novalidate>
           <label for="jEmail" style="position:absolute;left:-9999px">Email address</label>
           <input type="email" id="jEmail" placeholder="you@example.com" autocomplete="email" required>
@@ -315,8 +337,10 @@ function showScreen(id){
 function renderQ(){
   const q = Q[cur];
   $('qTitle').textContent = q.t;
-  $('qHint').textContent = q.h;
-  $('qHint').style.display = q.h ? '' : 'none';
+  let hint = q.h;
+  if(cur === 0){ const n = getNiche(); if(n && n.who){ hint = (q.h ? q.h + ' ' : '') + 'Hold the people you named in mind: \u201c' + n.who + '\u201d.'; } }
+  $('qHint').textContent = hint;
+  $('qHint').style.display = hint ? '' : 'none';
   const box = $('qOpts'); box.innerHTML = '';
   q.o.forEach((opt, i) => {
     const b = document.createElement('button');
@@ -337,7 +361,28 @@ function answer(i){
   else finish();
 }
 $('backBtn').addEventListener('click', () => { if(cur > 0){ cur--; renderQ(); } });
-$('startBtn').addEventListener('click', () => { reset(); cur = 0; renderQ(); track('start'); });
+/* ---- sentence step ---- */
+const getNiche = () => { try{ return JSON.parse(localStorage.getItem('lampstand_niche')||'null'); }catch(_){ return null; } };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const sWho = $('sWho'), sWhat = $('sWhat');
+function beginQuestions(){ reset(); cur = 0; renderQ(); }
+$('startBtn').addEventListener('click', () => {
+  const n = getNiche();
+  if(n){ if(n.who) sWho.textContent = n.who; if(n.what) sWhat.textContent = n.what; }
+  showScreen('sScreen');
+  if(!sWho.textContent) { sWho.focus(); }
+  track('start');
+});
+sWho.addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); sWhat.focus(); } });
+sWhat.addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); $('sGo').click(); } });
+$('sGo').addEventListener('click', () => {
+  const who = sWho.textContent.trim(), what = sWhat.textContent.trim();
+  if(!who && !what){ $('sNote').hidden = false; sWho.focus(); return; }
+  try{ localStorage.setItem('lampstand_niche', JSON.stringify({who, what, ts:Date.now()})); }catch(_){ }
+  track('sentence', {haswho: !!who, haswhat: !!what});
+  beginQuestions();
+});
+$('sSkip').addEventListener('click', () => { track('sentence_skip'); beginQuestions(); });
 $('retryBtn').addEventListener('click', () => { reset(); cur = 0; renderQ(); track('retry'); });
 
 function finish(){
@@ -364,10 +409,15 @@ function finish(){
   $('rStr').innerHTML = r.str;
   $('rSound').innerHTML = r.sound;
   $('cName').textContent = r.plain;
+  const n = getNiche();
+  if(n && n.who && n.what){
+    $('rCalling').innerHTML = '\u201CGod has called me to reach <b>' + esc(n.who) + '</b> with the message of <b>' + esc(n.what) + '</b>.\u201D';
+    $('rCalling').hidden = false;
+  }
   $('progFill').style.width = '100%';
   showScreen('rScreen');
   window.__pattern = key;
-  try{ localStorage.setItem('lampstand_quiz', JSON.stringify({archetype:key, answers, ts:Date.now()})); }catch(_){ }
+  try{ const n2 = getNiche(); localStorage.setItem('lampstand_quiz', JSON.stringify({archetype:key, answers, who:(n2&&n2.who)||null, what:(n2&&n2.what)||null, ts:Date.now()})); }catch(_){ }
   track('result', {pattern:key});
   document.title = r.plain + ' \u2014 Lampstand';
 }
@@ -375,7 +425,9 @@ function finish(){
 /* ============ share ============ */
 $('shareBtn').addEventListener('click', async () => {
   const r = P[window.__pattern];
-  const text = 'I took Lampstand\u2019s calling quiz \u2014 I carry ' + r.plain + '. ' + r.ref + ' is God\u2019s answer to my hesitation. Which voice shares yours?';
+  const n = getNiche();
+  const sent = (n && n.who && n.what) ? '\u201CGod has called me to reach ' + n.who + ' with the message of ' + n.what + '.\u201D ' : '';
+  const text = sent + 'I carry ' + r.plain + ' \u2014 ' + r.ref + ' is God\u2019s answer to my hesitation. Which voice in Scripture shares yours?';
   const url = location.origin + location.pathname;
   try{
     if(navigator.share){ await navigator.share({title:'Lampstand', text, url}); }
