@@ -71,6 +71,18 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 .sunrise{position:absolute; left:50%; bottom:-22vw; width:120vw; height:120vw; transform:translateX(-50%); border-radius:50%; pointer-events:none; z-index:0;
   background:radial-gradient(closest-side, rgba(245,196,105,.5), rgba(240,182,88,.22) 40%, transparent 68%);
   animation:sunup 2.6s cubic-bezier(.22,.7,.3,1) both}
+/* --- fishing animation --- */
+.rod-group{transform-origin:1140px 684px; animation:rod-sway 4s ease-in-out infinite}
+@keyframes rod-sway{0%,100%{transform:rotate(0deg)}50%{transform:rotate(1.8deg)}}
+.bobber{animation:bob 3s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+.fish-line{animation:line-sway 4s ease-in-out infinite}
+@keyframes line-sway{0%,100%{d:path("M1282,616 Q1290,680 1286,738")}50%{d:path("M1282,618 Q1294,684 1288,742")}}
+.ripple{animation:ripple-out 3s ease-out infinite; transform-origin:center}
+.r1{animation-delay:0s}
+.r2{animation-delay:.6s; opacity:.6}
+.r3{animation-delay:1.2s; opacity:.3}
+@keyframes ripple-out{0%{transform:scale(.6);opacity:.8}100%{transform:scale(1.6);opacity:0}}
 @keyframes sunup{from{opacity:0; transform:translateX(-50%) translateY(9vw) scale(.92)}to{opacity:1; transform:translateX(-50%) translateY(0) scale(1)}}
 .hi{font-family:'Fraunces',serif; font-style:italic; font-size:16px; color:var(--brass-deep); margin-bottom:16px; display:flex; align-items:center; gap:9px}
 .hi svg{flex:none}
@@ -421,17 +433,36 @@ footer{border-top:1px solid var(--line-soft); padding:44px 0 54px; position:rela
       <path d="M0,540 L120,470 L210,512 L330,432 L440,500 L560,450 L700,522 L840,440 L980,502 L1120,455 L1260,516 L1380,470 L1440,502 L1440,900 L0,900 Z" fill="#E4D5AC"/>
       <path d="M0,642 L160,582 L300,632 L430,560 L580,620 L720,560 L880,632 L1020,576 L1180,636 L1320,586 L1440,632 L1440,900 L0,900 Z" fill="#D4BF8C"/>
       <path d="M0,742 L200,690 L380,736 L560,680 L760,742 L960,690 L1160,746 L1360,700 L1440,730 L1440,900 L0,900 Z" fill="#BFA467"/>
-      <g fill="#55421F">
-        <path d="M1044,792 C1052,706 1084,664 1120,664 C1156,664 1188,706 1196,792 Z"/>
-        <path d="M1090,712 C1094,680 1148,680 1152,712 L1150,742 L1092,742 Z"/>
-        <circle cx="1121" cy="650" r="20"/>
-        <path d="M1099,662 C1099,630 1143,630 1143,662 C1136,650 1106,650 1099,662 Z"/>
-        <path d="M1150,716 C1176,722 1198,748 1210,768 L1200,778 C1186,756 1168,734 1147,732 Z"/>
-        <path d="M1150,776 L1272,754 L1280,776 L1158,798 Z"/>
-        <ellipse cx="1256" cy="762" rx="15" ry="6" transform="rotate(-9 1256 762)"/>
+      <!-- fisher silhouette -->
+      <g class="fisher" fill="#55421F">
+        <!-- body seated on hill -->
+        <circle cx="1108" cy="668" r="16"/><!-- head -->
+        <path d="M1094,684 C1090,694 1088,710 1090,724 L1126,724 C1128,710 1126,694 1122,684 Z"/><!-- torso -->
+        <path d="M1086,724 C1082,746 1078,768 1074,792 L1100,792 C1098,768 1096,746 1094,724 Z"/><!-- left leg bent -->
+        <path d="M1118,724 L1148,760 L1158,752 L1130,720 Z"/><!-- right leg forward -->
+        <ellipse cx="1152" cy="758" rx="12" ry="5"/><!-- right foot/shoe -->
+        <path d="M1072,794 L1102,794 L1102,798 L1072,798 Z"/><!-- left foot -->
+        <!-- hat brim -->
+        <path d="M1092,670 C1088,658 1098,648 1108,646 C1118,648 1128,658 1124,670" fill="#55421F"/>
+        <path d="M1086,670 L1130,670 L1128,676 L1088,676 Z"/><!-- brim -->
+        <!-- arm holding rod -->
+        <path d="M1122,694 C1130,690 1138,686 1142,682" stroke="#55421F" stroke-width="5" stroke-linecap="round" fill="none"/>
       </g>
-      <path d="M1206,770 L1236,732" stroke="#55421F" stroke-width="2.4" stroke-linecap="round"/>
-      <path d="M1236,732 L1231,744 L1244,741 Z" fill="#55421F"/>
+      <!-- fishing rod -->
+      <g class="rod-group">
+        <path d="M1140,684 L1282,616" stroke="#55421F" stroke-width="2.8" stroke-linecap="round"/><!-- rod -->
+        <!-- fishing line from rod tip to bobber -->
+        <path class="fish-line" d="M1282,616 Q1290,680 1286,738" stroke="#55421F" stroke-width="1.2" stroke-linecap="round" fill="none" stroke-dasharray="3,4"/>
+        <!-- bobber -->
+        <g class="bobber">
+          <ellipse cx="1286" cy="742" rx="5" ry="4" fill="#B05A32"/>
+          <ellipse cx="1286" cy="739" rx="3.5" ry="2.5" fill="#FCF8EC"/>
+        </g>
+        <!-- water ripples around bobber -->
+        <ellipse class="ripple r1" cx="1286" cy="744" rx="8" ry="2.5" fill="none" stroke="#BFA467" stroke-width="1"/>
+        <ellipse class="ripple r2" cx="1286" cy="744" rx="16" ry="4" fill="none" stroke="#BFA467" stroke-width=".7"/>
+        <ellipse class="ripple r3" cx="1286" cy="744" rx="26" ry="5.5" fill="none" stroke="#BFA467" stroke-width=".4"/>
+      </g>
     </svg>
   </div>
 
