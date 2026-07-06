@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lampstand — Your daily lamp</title>
+<meta name="description" content="Your calling, posted daily. Sign in to light today's lamp.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#FCF8EC">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 26'%3E%3Cpath d='M11 1C11 1 4 8 4 15a7 7 0 0014 0c0-3-2-5-3-7-1 2-2 3-3.5 3C10 11 12 6 11 1z' fill='%23B8862C'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,500;9..144,1,400;9..144,1,500&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--ink:#FCF8EC;--card:#FFFDF5;--papyrus:#33291A;--flax:#6E5E3E;--flax-dim:#877344;--lamp:#B8862C;--lamp-soft:rgba(245,196,105,.28);--brass-deep:#7C5216;--terra:#B05A32;--olive:#6F8148;--line:#E0D2AC}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--papyrus);font-family:'Instrument Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(70vw 70vw at 50% 115%,rgba(245,196,105,.22),transparent 62%)}
+a{color:var(--brass-deep)}
+button{font-family:inherit}
+em{font-style:italic;color:var(--lamp)}
+
+/* top bar */
+.bar{display:flex;align-items:center;gap:10px;max-width:880px;width:100%;margin:0 auto;padding:22px 22px 0;position:relative;z-index:2}
+.flame{width:19px;height:23px;flex:none}
+.bn{font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:var(--papyrus);text-decoration:none}
+.wt{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--flax-dim);margin-left:2px}
+.bar .sp{flex:1}
+.signout{background:none;border:1px solid var(--line);border-radius:999px;padding:7px 16px;font-size:12.5px;color:var(--flax);cursor:pointer;display:none}
+.signout:hover{border-color:var(--lamp);color:var(--brass-deep)}
+
+main{flex:1;max-width:880px;width:100%;margin:0 auto;padding:36px 22px 80px;position:relative;z-index:1}
+.view{display:none;animation:rise .5s ease both}
+.view.on{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.view{animation:none}}
+
+.ey{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--lamp);font-weight:600}
+h1{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(27px,4.6vw,38px);letter-spacing:-.015em;line-height:1.14;margin-top:10px}
+.sub{font-size:15px;line-height:1.65;color:var(--flax);margin-top:12px;max-width:56ch}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(22px,3.5vw,34px);box-shadow:0 18px 44px -26px rgba(122,95,46,.35)}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(170deg,#E8B54B,#B8862C 45%,#A9761E);color:#1a1204;font-weight:600;font-size:15px;padding:14px 28px;border-radius:999px;border:none;cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .15s;box-shadow:0 10px 26px -12px rgba(184,134,44,.55)}
+.cta:hover{transform:translateY(-1px);box-shadow:0 14px 30px -12px rgba(184,134,44,.65)}
+.cta:disabled{opacity:.55;cursor:default;transform:none}
+.ghost{background:none;border:none;font-size:13px;color:var(--flax-dim);text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:8px 4px}
+.ghost:hover{color:var(--brass-deep)}
+.note{font-size:12.5px;color:var(--flax-dim);margin-top:12px}
+.err{font-size:13px;color:var(--terra);margin-top:10px;display:none}
+input[type=email],input[type=text],textarea{width:100%;background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-family:inherit;font-size:15px;color:var(--papyrus);outline:none;transition:border .2s}
+input:focus,textarea:focus{border-color:var(--lamp)}
+label{display:block;font-size:12.5px;font-weight:600;color:var(--flax);margin:0 0 7px}
+
+/* ===== gate ===== */
+#vGate .card{max-width:480px;margin:34px auto 0}
+.gform{display:flex;flex-direction:column;gap:14px;margin-top:18px}
+.code-row{display:flex;gap:10px}
+.code-row input{letter-spacing:.35em;font-size:18px;text-align:center;font-variant-numeric:tabular-nums}
+
+/* ===== onboarding ===== */
+.steps{display:flex;gap:6px;margin:26px 0 22px}
+.step-dot{height:4px;flex:1;border-radius:99px;background:var(--line);transition:background .3s}
+.step-dot.on{background:var(--lamp)}
+.ob-sent{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(21px,4vw,28px);line-height:1.55;letter-spacing:-.01em;margin:22px 0 6px}
+.slot{display:inline;border-bottom:2px solid var(--lamp);padding:0 3px 1px;min-width:60px;color:var(--brass-deep);outline:none;transition:background .2s}
+.slot:focus{background:var(--lamp-soft)}
+.slot:empty::before{content:attr(data-ph);color:var(--flax-dim);font-style:italic;font-weight:400}
+.pattern-chip{display:inline-flex;align-items:center;gap:7px;font-family:'Fraunces',serif;font-size:14px;color:var(--brass-deep);border:1px solid var(--line);background:rgba(255,255,255,.7);border-radius:999px;padding:8px 16px;margin-top:14px}
+.voices{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:20px}
+.vcard{text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;transition:border .2s,transform .15s}
+.vcard:hover{transform:translateY(-2px)}
+.vcard.sel{border-color:var(--lamp);background:linear-gradient(160deg,#fff,#FBF3DD)}
+.vcard h4{font-family:'Fraunces',serif;font-weight:500;font-size:16.5px}
+.vcard p{font-size:12.5px;color:var(--flax);line-height:1.5;margin-top:5px}
+.rowcta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:26px}
+.cov-verse{font-family:'Fraunces',serif;font-style:italic;font-size:15.5px;color:var(--brass-deep);border-left:2px solid var(--lamp);padding-left:16px;margin-top:20px;line-height:1.6}
+
+/* ===== workspace ===== */
+.whead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.wsent{font-family:'Fraunces',serif;font-style:italic;font-size:15px;color:var(--brass-deep);margin-top:8px;line-height:1.55}
+.streak{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--brass-deep);border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 16px;white-space:nowrap}
+.today{margin-top:26px}
+.spark-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.spark-row textarea{flex:1;min-width:240px;resize:vertical;min-height:52px}
+.beats{display:grid;gap:12px;margin-top:22px}
+.beat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;animation:rise .45s ease both}
+.beat:nth-child(2){animation-delay:.06s}.beat:nth-child(3){animation-delay:.12s}.beat:nth-child(4){animation-delay:.18s}
+.beat h5{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--lamp);font-weight:600}
+.beat p{font-size:15px;line-height:1.65;color:var(--papyrus);margin-top:7px}
+.beat.rev{background:linear-gradient(160deg,#fff,#FBF3DD)}
+.meta{display:flex;gap:14px;font-size:12.5px;color:var(--flax-dim);margin-top:14px}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.act{background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 20px;font-size:13px;font-weight:600;color:var(--flax);cursor:pointer;transition:border .2s,color .2s}
+.act:hover{border-color:var(--lamp);color:var(--brass-deep)}
+.act.done{border-color:var(--olive);color:var(--olive)}
+.past{margin-top:44px}
+.past h3{font-family:'Fraunces',serif;font-weight:500;font-size:20px}
+.plist{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.pitem{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:13.5px}
+.pitem .ph{flex:1;color:var(--papyrus);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pitem .pd{color:var(--flax-dim);font-size:12px;white-space:nowrap}
+.chip{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;border-radius:99px;padding:4px 10px;white-space:nowrap}
+.chip.draft{background:var(--lamp-soft);color:var(--brass-deep)}
+.chip.recorded{background:rgba(111,129,72,.16);color:var(--olive)}
+.chip.published{background:rgba(176,90,50,.14);color:var(--terra)}
+.empty{font-size:13.5px;color:var(--flax-dim);font-style:italic;margin-top:12px}
+.gen-wait{display:none;align-items:center;gap:12px;margin-top:20px;font-size:13.5px;color:var(--flax)}
+.gen-wait.on{display:flex}
+.wick{width:16px;height:20px;position:relative}
+.wick::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 65%,#E8B54B 0%,#B8862C 55%,transparent 70%);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;animation:flick 1s ease-in-out infinite alternate}
+@keyframes flick{from{transform:scale(.92) rotate(-2deg)}to{transform:scale(1.05) rotate(2deg)}}
+footer{text-align:center;padding:20px;font-size:12px;color:var(--flax-dim);position:relative;z-index:1}
+</style></head>
+<body>
+<div class="bar">
+  <svg class="flame" viewBox="0 0 22 26" fill="none" aria-hidden="true"><path d="M11 1C11 1 4 8 4 15a7 7 0 0014 0c0-3-2-5-3-7-1 2-2 3-3.5 3C10 11 12 6 11 1z" fill="#B8862C"/></svg>
+  <a class="bn" href="/">Lampstand</a><span class="wt">working title</span>
+  <span class="sp"></span>
+  <button class="signout" id="signOut">Sign out</button>
+</div>
+
+<main>
+  <!-- ================= GATE ================= -->
+  <section class="view" id="vGate">
+    <div style="text-align:center">
+      <p class="ey">The lamp room</p>
+      <h1>Welcome <em>home.</em></h1>
+      <p class="sub" style="margin-inline:auto">One email, no password. We&rsquo;ll send you a sign-in link &mdash; click it and you&rsquo;re in.</p>
+    </div>
+    <div class="card">
+      <div id="gStep1">
+        <div class="gform">
+          <div><label for="gEmail">Email</label><input type="email" id="gEmail" placeholder="you@example.com" autocomplete="email"></div>
+          <button class="cta" id="gSend">Send my sign-in link</button>
+        </div>
+        <p class="err" id="gErr"></p>
+        <p class="note">First time? The same link creates your account.</p>
+      </div>
+      <div id="gStep2" style="display:none">
+        <p style="font-size:15px;line-height:1.65"><b>Check your inbox.</b> We sent a sign-in link to <b id="gSentTo"></b>. Click it on this device and you&rsquo;ll land right back here, signed in.</p>
+        <p class="note" style="margin-top:14px">Got a 6-digit code instead? Enter it here:</p>
+        <div class="code-row" style="margin-top:8px">
+          <input type="text" id="gCode" inputmode="numeric" maxlength="6" placeholder="••••••" aria-label="6-digit code">
+          <button class="cta" id="gVerify" style="padding:13px 22px">Verify</button>
+        </div>
+        <p class="err" id="gErr2"></p>
+        <button class="ghost" id="gBack" style="margin-top:12px">&larr; Use a different email</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ONBOARDING ================= -->
+  <section class="view" id="vOnboard">
+    <p class="ey">Before your first lamp</p>
+    <h1 id="obTitle">What should we <em>call you?</em></h1>
+    <div class="steps" aria-hidden="true"><div class="step-dot on"></div><div class="step-dot" id="sd2"></div><div class="step-dot" id="sd3"></div><div class="step-dot" id="sd4"></div></div>
+
+    <div class="card">
+      <!-- step 1: name -->
+      <div class="ob" id="ob1">
+        <label for="obName">Your first name</label>
+        <input type="text" id="obName" placeholder="What your people would call you" maxlength="60" autocomplete="given-name">
+        <div class="rowcta"><button class="cta" id="ob1Go">Continue</button></div>
+      </div>
+
+      <!-- step 2: sentence -->
+      <div class="ob" id="ob2" style="display:none">
+        <p class="sub" style="margin-top:0">This is the sentence everything else is built on. Say it plainly &mdash; you can sharpen it, but you can&rsquo;t skip it.</p>
+        <p class="ob-sent">&ldquo;God has called me to reach <span class="slot" id="obWho" contenteditable="true" role="textbox" aria-label="who you are called to reach" data-ph="young people drifting from faith"></span> with the message of <span class="slot" id="obWhat" contenteditable="true" role="textbox" aria-label="the message you carry" data-ph="God&rsquo;s unconditional love"></span>.&rdquo;</p>
+        <span class="pattern-chip" id="obPattern" style="display:none"></span>
+        <p class="err" id="ob2Err">Both halves need words &mdash; who, and what.</p>
+        <div class="rowcta"><button class="cta" id="ob2Go">That&rsquo;s my sentence</button><button class="ghost" id="ob2Back">&larr; Back</button></div>
+      </div>
+
+      <!-- step 3: voice -->
+      <div class="ob" id="ob3" style="display:none">
+        <p class="sub" style="margin-top:0">How do you naturally speak when you talk about God? Your daily scripts will be written in this register.</p>
+        <div class="voices" role="group" aria-label="Choose your voice">
+          <button class="vcard" data-v="teacher"><h4>The Teacher</h4><p>Clear, structured, verse-anchored. You explain until it clicks.</p></button>
+          <button class="vcard" data-v="storyteller"><h4>The Storyteller</h4><p>Scenes and people first. Truth arrives inside a story.</p></button>
+          <button class="vcard" data-v="encourager"><h4>The Encourager</h4><p>Warm, direct-to-camera comfort. You speak to one hurting person.</p></button>
+          <button class="vcard" data-v="challenger"><h4>The Challenger</h4><p>Loving confrontation. You say the thing nobody else will.</p></button>
+        </div>
+        <div class="rowcta"><button class="cta" id="ob3Go" disabled>Continue</button><button class="ghost" id="ob3Back">&larr; Back</button></div>
+      </div>
+
+      <!-- step 4: covenant -->
+      <div class="ob" id="ob4" style="display:none">
+        <p class="sub" style="margin-top:0"><b id="covName"></b>, this is the covenant. One niche. One short a day. We&rsquo;ll bring the scripts &mdash; you bring the showing up.</p>
+        <p class="ob-sent" id="covSent" style="font-size:clamp(19px,3.4vw,24px)"></p>
+        <p class="cov-verse">&ldquo;No one lights a lamp and puts it under a basket. Instead, they put it on a stand, and it gives light to everyone in the house.&rdquo; &mdash; Matthew 5:15</p>
+        <p class="err" id="ob4Err"></p>
+        <div class="rowcta"><button class="cta" id="ob4Go">Light my lampstand</button><button class="ghost" id="ob4Back">&larr; Back</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WORKSPACE ================= -->
+  <section class="view" id="vWork">
+    <div class="whead">
+      <div>
+        <p class="ey" id="wDate"></p>
+        <h1 id="wGreet"></h1>
+        <p class="wsent" id="wSent"></p>
+      </div>
+      <span class="streak" id="wStreak" title="Days you've lit the lamp">
+        <svg width="13" height="16" viewBox="0 0 22 26" fill="none" aria-hidden="true"><path d="M11 1C11 1 4 8 4 15a7 7 0 0014 0c0-3-2-5-3-7-1 2-2 3-3.5 3C10 11 12 6 11 1z" fill="#B8862C"/></svg>
+        <span id="wStreakN">0</span> lamps lit
+      </span>
+    </div>
+
+    <div class="card today" id="todayCard">
+      <div id="wEmpty">
+        <p class="ey">Today&rsquo;s short</p>
+        <h1 style="font-size:clamp(22px,3.6vw,28px)">Light today&rsquo;s <em>lamp.</em></h1>
+        <p class="sub">Anything on your heart today? A verse, a moment, a conversation &mdash; or leave it blank and let your calling lead.</p>
+        <div class="spark-row">
+          <textarea id="wSpark" maxlength="300" placeholder="Optional — e.g. 'a friend told me she can't forgive herself'"></textarea>
+          <button class="cta" id="wGen">Write today&rsquo;s script</button>
+        </div>
+        <div class="gen-wait" id="wWait"><span class="wick" aria-hidden="true"></span><span>Listening to your calling&hellip; writing in your voice&hellip;</span></div>
+        <p class="err" id="wErr"></p>
+      </div>
+
+      <div id="wScript" style="display:none">
+        <p class="ey">Today&rsquo;s short &middot; <span id="wSee" style="text-transform:none;letter-spacing:0"></span></p>
+        <div class="beats">
+          <div class="beat"><h5>Hook</h5><p id="bHook"></p></div>
+          <div class="beat"><h5>Tension</h5><p id="bTension"></p></div>
+          <div class="beat rev"><h5>Revelation</h5><p id="bRev"></p></div>
+          <div class="beat"><h5>Response</h5><p id="bResp"></p></div>
+        </div>
+        <div class="meta"><span id="mWords"></span><span id="mSecs"></span></div>
+        <div class="acts">
+          <button class="act" id="aCopy">Copy full script</button>
+          <button class="act" id="aRecorded">Mark recorded ✓</button>
+          <button class="act" id="aNew">Write a different take</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="past">
+      <h3>Your lamps so far</h3>
+      <div class="plist" id="wPast"></div>
+      <p class="empty" id="wPastEmpty" style="display:none">Your first script will appear here. Every lamp you light gets kept.</p>
+    </div>
+  </section>
+</main>
+
+<footer>&ldquo;You are the light of the world.&rdquo; &middot; Matthew 5:14 &middot; &copy; 2026 Lampstand</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+/* ============ config ============ */
+const SB_URL = 'https://bwurwqdkxccvmwqhslha.supabase.co';
+const SB_KEY = 'sb_publishable_TY9SuANHZDCpl8q_rVs0SA_DqTvpOP0';
+const sb = window.supabase.createClient(SB_URL, SB_KEY);
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const PATTERNS = {moses:'Moses', jeremiah:'Jeremiah', esther:'Esther', david:'David', paul:'Paul', deborah:'Deborah', nehemiah:'Nehemiah', barnabas:'Barnabas'};
+
+let session = null, profile = null, calling = null, todayScript = null;
+
+/* ============ view router ============ */
+function show(v){ document.querySelectorAll('.view').forEach(x => x.classList.remove('on')); $(v).classList.add('on'); $('signOut').style.display = session ? 'block' : 'none'; window.scrollTo({top:0}); }
+
+async function route(){
+  const { data: { session: s } } = await sb.auth.getSession();
+  session = s;
+  if(!session){ show('vGate'); return; }
+  const uid = session.user.id;
+  const [{ data: p }, { data: c }] = await Promise.all([
+    sb.from('lampstand_profiles').select('*').eq('id', uid).maybeSingle(),
+    sb.from('lampstand_callings').select('*').eq('user_id', uid).eq('is_active', true).maybeSingle()
+  ]);
+  profile = p; calling = c;
+  if(!calling){ prepOnboard(); show('vOnboard'); }
+  else { await prepWork(); show('vWork'); }
+}
+sb.auth.onAuthStateChange((_e, s) => { const had = !!session; session = s; if(!!s !== had) route(); });
+
+/* ============ gate ============ */
+$('gSend').addEventListener('click', async () => {
+  const email = $('gEmail').value.trim().toLowerCase();
+  $('gErr').style.display = 'none';
+  if(!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ $('gErr').textContent = 'That email doesn\u2019t look complete.'; $('gErr').style.display = 'block'; return; }
+  $('gSend').disabled = true; $('gSend').textContent = 'Sending\u2026';
+  const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: location.origin + '/app' } });
+  $('gSend').disabled = false; $('gSend').textContent = 'Send my sign-in link';
+  if(error){ $('gErr').textContent = error.message.includes('rate') ? 'Too many attempts \u2014 wait a minute and try again.' : 'Couldn\u2019t send just now. Try again in a moment.'; $('gErr').style.display = 'block'; return; }
+  $('gSentTo').textContent = email; $('gStep1').style.display = 'none'; $('gStep2').style.display = 'block'; window.__email = email;
+});
+$('gVerify').addEventListener('click', async () => {
+  const token = $('gCode').value.trim();
+  $('gErr2').style.display = 'none';
+  if(token.length !== 6){ $('gErr2').textContent = 'The code is 6 digits.'; $('gErr2').style.display = 'block'; return; }
+  const { error } = await sb.auth.verifyOtp({ email: window.__email, token, type: 'email' });
+  if(error){ $('gErr2').textContent = 'That code didn\u2019t match \u2014 check it and try again.'; $('gErr2').style.display = 'block'; }
+});
+$('gBack').addEventListener('click', () => { $('gStep2').style.display = 'none'; $('gStep1').style.display = 'block'; });
+$('gEmail').addEventListener('keydown', e => { if(e.key === 'Enter') $('gSend').click(); });
+$('gCode').addEventListener('keydown', e => { if(e.key === 'Enter') $('gVerify').click(); });
+$('signOut').addEventListener('click', async () => { await sb.auth.signOut(); location.reload(); });
+
+/* ============ onboarding ============ */
+let obStep = 1, obVoice = null;
+function obShow(n){
+  obStep = n;
+  for(let i=1;i<=4;i++) $('ob'+i).style.display = i===n ? 'block' : 'none';
+  ['sd2','sd3','sd4'].forEach((id,i) => $(id).classList.toggle('on', n >= i+2));
+  $('obTitle').innerHTML = ['What should we <em>call you?</em>','Say it <em>plainly.</em>','Find your <em>voice.</em>','The <em>covenant.</em>'][n-1];
+}
+function prepOnboard(){
+  let q = null, nch = null;
+  try{ q = JSON.parse(localStorage.getItem('lampstand_quiz')||'null'); }catch(_){}
+  try{ nch = JSON.parse(localStorage.getItem('lampstand_niche')||'null'); }catch(_){}
+  const who = (q && q.who) || (nch && nch.who) || '', what = (q && q.what) || (nch && nch.what) || '';
+  if(who) $('obWho').textContent = who;
+  if(what) $('obWhat').textContent = what;
+  if(q && q.archetype && PATTERNS[q.archetype]){
+    $('obPattern').innerHTML = '&#10022; You carry the <b>&nbsp;' + PATTERNS[q.archetype] + ' Pattern</b> &mdash; from your quiz';
+    $('obPattern').style.display = 'inline-flex';
+    window.__arch = q.archetype;
+  }
+  if(profile && profile.display_name) $('obName').value = profile.display_name;
+  obShow(1);
+}
+$('ob1Go').addEventListener('click', () => { if(!$('obName').value.trim()){ $('obName').focus(); return; } obShow(2); if(!$('obWho').textContent) $('obWho').focus(); });
+$('obName').addEventListener('keydown', e => { if(e.key === 'Enter') $('ob1Go').click(); });
+$('obWho').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); $('obWhat').focus(); } });
+$('obWhat').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); $('ob2Go').click(); } });
+$('ob2Go').addEventListener('click', () => {
+  const who = $('obWho').textContent.trim(), what = $('obWhat').textContent.trim();
+  if(!who || !what){ $('ob2Err').style.display = 'block'; (who ? $('obWhat') : $('obWho')).focus(); return; }
+  $('ob2Err').style.display = 'none'; obShow(3);
+});
+$('ob2Back').addEventListener('click', () => obShow(1));
+document.querySelectorAll('.vcard').forEach(c => c.addEventListener('click', () => {
+  document.querySelectorAll('.vcard').forEach(x => x.classList.remove('sel'));
+  c.classList.add('sel'); obVoice = c.dataset.v; $('ob3Go').disabled = false;
+}));
+$('ob3Go').addEventListener('click', () => {
+  $('covName').textContent = $('obName').value.trim();
+  $('covSent').innerHTML = '&ldquo;God has called me to reach <b>' + esc($('obWho').textContent.trim()) + '</b> with the message of <b>' + esc($('obWhat').textContent.trim()) + '</b>.&rdquo;';
+  obShow(4);
+});
+$('ob3Back').addEventListener('click', () => obShow(2));
+$('ob4Back').addEventListener('click', () => obShow(3));
+$('ob4Go').addEventListener('click', async () => {
+  const btn = $('ob4Go'); btn.disabled = true; btn.textContent = 'Lighting\u2026'; $('ob4Err').style.display = 'none';
+  const uid = session.user.id;
+  const name = $('obName').value.trim(), who = $('obWho').textContent.trim(), what = $('obWhat').textContent.trim();
+  const { error: e1 } = await sb.from('lampstand_profiles').upsert({ id: uid, display_name: name, voice: obVoice });
+  const { data: c, error: e2 } = await sb.from('lampstand_callings').insert({ user_id: uid, who, what, archetype: window.__arch || null }).select().single();
+  if(e1 || e2){ btn.disabled = false; btn.textContent = 'Light my lampstand'; $('ob4Err').textContent = 'Something slipped \u2014 try once more.'; $('ob4Err').style.display = 'block'; return; }
+  profile = { id: uid, display_name: name, voice: obVoice }; calling = c;
+  try{ localStorage.setItem('lampstand_niche', JSON.stringify({who, what, ts:Date.now()})); }catch(_){}
+  await prepWork(); show('vWork');
+});
+
+/* ============ workspace ============ */
+function hourGreet(){ const h = new Date().getHours(); return h < 5 ? 'Still watch of the night' : h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'; }
+async function prepWork(){
+  const uid = session.user.id;
+  $('wDate').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+  $('wGreet').innerHTML = hourGreet() + ', <em>' + esc((profile && profile.display_name) || 'friend') + '.</em>';
+  $('wSent').innerHTML = '&ldquo;God has called me to reach <b>' + esc(calling.who) + '</b> with the message of <b>' + esc(calling.what) + '</b>.&rdquo;';
+  const { data: scripts } = await sb.from('lampstand_scripts').select('*').eq('user_id', uid).order('created_at', { ascending: false }).limit(60);
+  const all = scripts || [];
+  const days = new Set(all.map(s => s.created_at.slice(0,10)));
+  $('wStreakN').textContent = days.size;
+  const todayKey = new Date().toISOString().slice(0,10);
+  todayScript = all.find(s => s.created_at.slice(0,10) === todayKey) || null;
+  if(todayScript) renderScript(todayScript);
+  else { $('wScript').style.display = 'none'; $('wEmpty').style.display = 'block'; }
+  const past = all.filter(s => s !== todayScript).slice(0, 10);
+  $('wPast').innerHTML = past.map(s =>
+    '<div class="pitem"><span class="ph">' + esc(s.hook || s.spark || 'Untitled') + '</span><span class="pd">' + new Date(s.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}) + '</span><span class="chip ' + esc(s.status) + '">' + esc(s.status) + '</span></div>'
+  ).join('');
+  $('wPastEmpty').style.display = past.length || todayScript ? 'none' : 'block';
+}
+function renderScript(s){
+  $('wEmpty').style.display = 'none'; $('wScript').style.display = 'block';
+  $('wSee').textContent = s.spark ? 'from your spark' : 'from your calling';
+  $('bHook').textContent = s.hook || ''; $('bTension').textContent = s.tension || '';
+  $('bRev').textContent = s.revelation || ''; $('bResp').textContent = s.response || '';
+  $('mWords').textContent = (s.word_count || '—') + ' words';
+  $('mSecs').textContent = '~' + (s.est_seconds || '—') + ' seconds spoken';
+  $('aRecorded').classList.toggle('done', s.status !== 'draft');
+  $('aRecorded').textContent = s.status !== 'draft' ? 'Recorded ✓' : 'Mark recorded ✓';
+}
+
+/* local fallback so the lamp lights even before the API key is set */
+function localGen(who, what, spark){
+  const hook = spark ? 'Somebody needs to hear this today: ' + spark.split(/[.!?]/)[0].trim().toLowerCase() + '.' : 'If you\u2019re one of ' + who + ', stop scrolling \u2014 this is for you.';
+  return {
+    see: 'a word for ' + who,
+    script: {
+      hook,
+      tension: 'You\u2019ve been carrying this alone \u2014 telling yourself it\u2019s too late, too broken, too far gone. And the silence has started to sound like God\u2019s answer.',
+      revelation: 'But hear what Scripture actually says: ' + what + ' isn\u2019t a reward for the put-together \u2014 it\u2019s a rescue for the running-on-empty. \u201cCome to me, all you who are weary.\u201d (Matthew 11:28)',
+      response: 'So today, just say it out loud \u2014 one honest sentence to God. That\u2019s the whole assignment.'
+    },
+    words: 108, secs: 45
+  };
+}
+
+async function generate(){
+  const spark = $('wSpark').value.trim();
+  $('wErr').style.display = 'none'; $('wWait').classList.add('on'); $('wGen').disabled = true;
+  let out = null;
+  try{
+    const r = await fetch(SB_URL + '/functions/v1/lampstand-generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + session.access_token },
+      body: JSON.stringify({ mode: 'script', who: calling.who, what: calling.what, spark, voice: (profile && profile.voice) || '', archetype: calling.archetype || '' })
+    });
+    if(r.status === 429){ throw { rate: true }; }
+    if(r.ok) out = await r.json();
+  }catch(e){ if(e && e.rate){ $('wWait').classList.remove('on'); $('wGen').disabled = false; $('wErr').textContent = 'You\u2019ve written a lot today \u2014 the lamp needs oil. Try again tomorrow.'; $('wErr').style.display = 'block'; return; } }
+  if(!out || !out.script) out = localGen(calling.who, calling.what, spark);
+  const s = out.script;
+  const row = {
+    user_id: session.user.id, calling_id: calling.id, spark: spark || null,
+    hook: s.hook, tension: s.tension, revelation: s.revelation, response: s.response,
+    word_count: out.words || null, est_seconds: out.secs || null, status: 'draft'
+  };
+  const { data: saved, error } = await sb.from('lampstand_scripts').insert(row).select().single();
+  $('wWait').classList.remove('on'); $('wGen').disabled = false;
+  if(error){ $('wErr').textContent = 'The script wrote but didn\u2019t save \u2014 copy it now and try again later.'; $('wErr').style.display = 'block'; }
+  todayScript = saved || { ...row, created_at: new Date().toISOString() };
+  renderScript(todayScript);
+}
+$('wGen').addEventListener('click', generate);
+$('aNew').addEventListener('click', () => { $('wScript').style.display = 'none'; $('wEmpty').style.display = 'block'; $('wSpark').focus(); });
+$('aCopy').addEventListener('click', async () => {
+  const t = [$('bHook').textContent, $('bTension').textContent, $('bRev').textContent, $('bResp').textContent].join('\n\n');
+  try{ await navigator.clipboard.writeText(t); $('aCopy').textContent = 'Copied ✓'; setTimeout(() => $('aCopy').textContent = 'Copy full script', 2000); }catch(_){}
+});
+$('aRecorded').addEventListener('click', async () => {
+  if(!todayScript || !todayScript.id || todayScript.status !== 'draft') return;
+  const { error } = await sb.from('lampstand_scripts').update({ status: 'recorded' }).eq('id', todayScript.id);
+  if(!error){ todayScript.status = 'recorded'; renderScript(todayScript); prepWork(); }
+});
+
+/* ============ boot ============ */
+route();
+</script>
+</body></html>
