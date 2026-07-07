@@ -85,11 +85,13 @@ h1 em{font-style:italic; color:var(--lamp)}
 .ghost{appearance:none; background:none; border:1px solid var(--line); color:var(--brass-deep); font-family:inherit; font-size:13px; font-weight:600; padding:11px 20px; border-radius:999px; cursor:pointer; transition:border-color .2s}
 .ghost:hover{border-color:var(--brass)}
 .sb-sent{font-family:'Fraunces',serif; font-weight:500; font-size:clamp(22px,4.2vw,30px); line-height:1.55; letter-spacing:-.01em; color:var(--papyrus); margin:26px 0 8px}
-.sb-slot{display:inline; border-bottom:2px solid var(--lamp); padding:0 3px 1px; min-width:60px; color:var(--brass-deep); outline:none; transition:background .2s; cursor:text}
-.sb-slot:focus{background:var(--lamp-soft)}
-.sb-slot:empty{background:var(--lamp-soft); border-bottom-style:dashed; border-radius:6px 6px 0 0; padding:0 10px 1px}
+.sb-slot{border-bottom:2px solid var(--lamp); padding:0 3px 1px; color:var(--brass-deep); outline:none; transition:background .2s,border-color .2s; cursor:text; caret-color:var(--brass-deep)}
+.sb-slot:focus{background:var(--lamp-soft); border-bottom-style:solid}
+.sb-slot:empty{display:inline-block; min-width:120px; background:var(--lamp-soft); border-bottom-style:dashed; border-radius:6px 6px 0 0; padding:0 10px 1px; vertical-align:baseline}
 .sb-slot:empty::before{content:attr(data-ph); color:var(--brass-deep); opacity:.55; font-style:italic; font-weight:400}
 .sb-slot:empty::after{content:" \270E"; font-style:normal; font-size:.75em; opacity:.6}
+.sb-slot:empty:focus::before,.sb-slot:empty:focus::after{content:none}
+.sb-slot:empty:focus{min-width:150px; background:#fff; box-shadow:inset 0 0 0 1.5px var(--lamp); border-radius:8px 8px 0 0}
 .sb-ex{font-size:13px; color:var(--flax-dim); line-height:1.6; margin-top:12px}
 .sb-ex b{color:var(--brass-deep); font-weight:600}
 .sb-skip{background:none; border:none; font-family:inherit; font-size:13px; color:var(--flax-dim); text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:8px 4px}
@@ -180,7 +182,6 @@ footer a{text-decoration:underline; text-underline-offset:3px; color:var(--brass
       <h2 class="qh">First, say it <em>plainly.</em></h2>
       <p class="hint">One sentence. Don&rsquo;t polish it &mdash; <b>tap each gold line and type</b> who you can&rsquo;t stop thinking about, and what you&rsquo;d tell them.</p>
       <p class="sb-sent">&ldquo;God has called me to reach <span id="sWho" class="sb-slot" contenteditable="true" role="textbox" aria-label="who you are called to reach" data-ph="young people drifting from faith"></span> with the message of <span id="sWhat" class="sb-slot" contenteditable="true" role="textbox" aria-label="the message you carry" data-ph="God&rsquo;s unconditional love"></span>.&rdquo;</p>
-      <p class="sb-ex">For example: &ldquo;God has called me to reach <b>young people drifting from faith</b> with the message of <b>God&rsquo;s unconditional love</b>.&rdquo;</p>
       <div class="rowcta">
         <button class="cta" id="sGo">That&rsquo;s my sentence &mdash; continue <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M9 4l4 4-4 4" stroke="#1a1204" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button class="sb-skip" id="sSkip" type="button">I&rsquo;m not sure yet &mdash; let the questions help</button>
