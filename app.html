@@ -60,9 +60,13 @@ label{display:block;font-size:12.5px;font-weight:600;color:var(--flax);margin:0 
 .step-dot{height:4px;flex:1;border-radius:99px;background:var(--line);transition:background .3s}
 .step-dot.on{background:var(--lamp)}
 .ob-sent{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(21px,4vw,28px);line-height:1.55;letter-spacing:-.01em;margin:22px 0 6px}
-.slot{display:inline;border-bottom:2px solid var(--lamp);padding:0 3px 1px;min-width:60px;color:var(--brass-deep);outline:none;transition:background .2s}
+.slot{display:inline;border-bottom:2px solid var(--lamp);padding:0 3px 1px;min-width:60px;color:var(--brass-deep);outline:none;transition:background .2s;cursor:text}
 .slot:focus{background:var(--lamp-soft)}
-.slot:empty::before{content:attr(data-ph);color:var(--flax-dim);font-style:italic;font-weight:400}
+.slot:empty{background:var(--lamp-soft);border-bottom-style:dashed;border-radius:6px 6px 0 0;padding:0 10px 1px}
+.slot:empty::before{content:attr(data-ph);color:var(--brass-deep);opacity:.55;font-style:italic;font-weight:400}
+.slot:empty::after{content:" \270E";font-style:normal;font-size:.75em;opacity:.6}
+.ob-ex{font-size:13px;color:var(--flax-dim);line-height:1.6;margin-top:12px}
+.ob-ex b{color:var(--brass-deep);font-weight:600}
 .pattern-chip{display:inline-flex;align-items:center;gap:7px;font-family:'Fraunces',serif;font-size:14px;color:var(--brass-deep);border:1px solid var(--line);background:rgba(255,255,255,.7);border-radius:999px;padding:8px 16px;margin-top:14px}
 .voices{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:20px}
 .vcard{text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;transition:border .2s,transform .15s}
@@ -163,8 +167,9 @@ footer{text-align:center;padding:20px;font-size:12px;color:var(--flax-dim);posit
 
       <!-- step 2: sentence -->
       <div class="ob" id="ob2" style="display:none">
-        <p class="sub" style="margin-top:0">This is the sentence everything else is built on. Say it plainly &mdash; you can sharpen it, but you can&rsquo;t skip it.</p>
+        <p class="sub" style="margin-top:0">This is the sentence everything else is built on. <b>Tap each gold line and type.</b></p>
         <p class="ob-sent">&ldquo;God has called me to reach <span class="slot" id="obWho" contenteditable="true" role="textbox" aria-label="who you are called to reach" data-ph="young people drifting from faith"></span> with the message of <span class="slot" id="obWhat" contenteditable="true" role="textbox" aria-label="the message you carry" data-ph="God&rsquo;s unconditional love"></span>.&rdquo;</p>
+        <p class="ob-ex">For example: &ldquo;God has called me to reach <b>young people drifting from faith</b> with the message of <b>God&rsquo;s unconditional love</b>.&rdquo;</p>
         <span class="pattern-chip" id="obPattern" style="display:none"></span>
         <p class="err" id="ob2Err">Both halves need words &mdash; who, and what.</p>
         <div class="rowcta"><button class="cta" id="ob2Go">That&rsquo;s my sentence</button><button class="ghost" id="ob2Back">&larr; Back</button></div>
