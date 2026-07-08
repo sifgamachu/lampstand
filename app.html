@@ -454,6 +454,7 @@ async function generate(){
   if(error){ $('wErr').textContent = 'The script wrote but didn\u2019t save \u2014 copy it now and try again later.'; $('wErr').style.display = 'block'; }
   todayScript = saved || { ...row, created_at: new Date().toISOString() };
   renderScript(todayScript);
+  if(saved) prepWork(); /* refresh streak + past list with the new lamp counted */
 }
 $('wGen').addEventListener('click', generate);
 $('aNew').addEventListener('click', () => { $('wScript').style.display = 'none'; $('wEmpty').style.display = 'block'; $('aBackToday').style.display = todayScript ? 'inline-block' : 'none'; $('wSpark').focus(); });
