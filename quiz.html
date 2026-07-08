@@ -388,7 +388,7 @@ $('startBtn').addEventListener('click', () => {
 sWho.addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); sWhat.focus(); } });
 sWhat.addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); $('sGo').click(); } });
 $('sGo').addEventListener('click', () => {
-  const who = sWho.textContent.trim(), what = sWhat.textContent.trim();
+  let who = sWho.textContent.trim().replace(/^to\s+/i, ''); const what = sWhat.textContent.trim();
   if(!who && !what){ $('sNote').hidden = false; sWho.focus(); return; }
   try{ localStorage.setItem('lampstand_niche', JSON.stringify({who, what, ts:Date.now()})); }catch(_){ }
   track('sentence', {haswho: !!who, haswhat: !!what});

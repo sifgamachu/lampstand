@@ -194,7 +194,7 @@ footer{text-align:center;padding:20px;font-size:12px;color:var(--flax-dim);posit
         <p class="ob-sent" id="covSent" style="font-size:clamp(19px,3.4vw,24px)"></p>
         <p class="cov-verse">&ldquo;No one lights a lamp and puts it under a basket. Instead, they put it on a stand, and it gives light to everyone in the house.&rdquo; &mdash; Matthew 5:15</p>
         <p class="err" id="ob4Err"></p>
-        <div class="rowcta"><button class="cta" id="ob4Go">Light my lampstand</button><button class="ghost" id="ob4Back">&larr; Back</button></div>
+        <div class="rowcta"><button class="cta" id="ob4Go">Light my lampstand</button><button class="ghost" id="obEdit">Edit my sentence</button><button class="ghost" id="ob4Back">&larr; Back</button></div>
       </div>
     </div>
   </section>
@@ -329,6 +329,7 @@ function prepOnboard(){
   const who = (q && q.who) || (nch && nch.who) || '', what = (q && q.what) || (nch && nch.what) || '';
   if(who) $('obWho').textContent = who;
   if(what) $('obWhat').textContent = what;
+  window.__hasSentence = !!(who && what);
   if(q && q.archetype && PATTERNS[q.archetype]){
     $('obPattern').innerHTML = '&#10022; You carry the <b>&nbsp;' + PATTERNS[q.archetype] + ' Pattern</b> &mdash; from your quiz';
     $('obPattern').style.display = 'inline-flex';
@@ -337,31 +338,38 @@ function prepOnboard(){
   if(profile && profile.display_name) $('obName').value = profile.display_name;
   obShow(1);
 }
-$('ob1Go').addEventListener('click', () => { if(!$('obName').value.trim()){ $('obName').focus(); return; } obShow(2); if(!$('obWho').textContent) $('obWho').focus(); });
+$('ob1Go').addEventListener('click', () => {
+  if(!$('obName').value.trim()){ $('obName').focus(); return; }
+  if(window.__hasSentence){ obShow(3); } else { obShow(2); if(!$('obWho').textContent) $('obWho').focus(); }
+});
 $('obName').addEventListener('keydown', e => { if(e.key === 'Enter') $('ob1Go').click(); });
 $('obWho').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); $('obWhat').focus(); } });
 $('obWhat').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); $('ob2Go').click(); } });
 $('ob2Go').addEventListener('click', () => {
   const who = $('obWho').textContent.trim(), what = $('obWhat').textContent.trim();
   if(!who || !what){ $('ob2Err').style.display = 'block'; (who ? $('obWhat') : $('obWho')).focus(); return; }
-  $('ob2Err').style.display = 'none'; obShow(3);
+  $('ob2Err').style.display = 'none';
+  if(window.__editReturn){ window.__editReturn = false; $('ob3Go').click ? refreshCovenant() : null; obShow(4); }
+  else obShow(3);
 });
+function refreshCovenant(){
+  $('covName').textContent = $('obName').value.trim();
+  $('covSent').innerHTML = '&ldquo;God has called me to reach <b>' + esc(cleanWho($('obWho').textContent.trim())) + '</b> with the message of <b>' + esc($('obWhat').textContent.trim()) + '</b>.&rdquo;';
+}
+$('obEdit').addEventListener('click', () => { window.__editReturn = true; obShow(2); });
 $('ob2Back').addEventListener('click', () => obShow(1));
 document.querySelectorAll('.vcard').forEach(c => c.addEventListener('click', () => {
   document.querySelectorAll('.vcard').forEach(x => x.classList.remove('sel'));
   c.classList.add('sel'); obVoice = c.dataset.v; $('ob3Go').disabled = false;
 }));
-$('ob3Go').addEventListener('click', () => {
-  $('covName').textContent = $('obName').value.trim();
-  $('covSent').innerHTML = '&ldquo;God has called me to reach <b>' + esc($('obWho').textContent.trim()) + '</b> with the message of <b>' + esc($('obWhat').textContent.trim()) + '</b>.&rdquo;';
-  obShow(4);
-});
-$('ob3Back').addEventListener('click', () => obShow(2));
+const cleanWho = w => w.replace(/^to\s+/i, '');
+$('ob3Go').addEventListener('click', () => { refreshCovenant(); obShow(4); });
+$('ob3Back').addEventListener('click', () => obShow(window.__hasSentence ? 1 : 2));
 $('ob4Back').addEventListener('click', () => obShow(3));
 $('ob4Go').addEventListener('click', async () => {
   const btn = $('ob4Go'); btn.disabled = true; btn.textContent = 'Lighting\u2026'; $('ob4Err').style.display = 'none';
   const uid = session.user.id;
-  const name = $('obName').value.trim(), who = $('obWho').textContent.trim(), what = $('obWhat').textContent.trim();
+  const name = $('obName').value.trim(), who = cleanWho($('obWho').textContent.trim()), what = $('obWhat').textContent.trim();
   const { error: e1 } = await sb.from('lampstand_profiles').upsert({ id: uid, display_name: name, voice: obVoice });
   const { data: c, error: e2 } = await sb.from('lampstand_callings').insert({ user_id: uid, who, what, archetype: window.__arch || null }).select().single();
   if(e1 || e2){ btn.disabled = false; btn.textContent = 'Light my lampstand'; $('ob4Err').textContent = 'Something slipped \u2014 try once more.'; $('ob4Err').style.display = 'block'; return; }
