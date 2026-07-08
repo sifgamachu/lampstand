@@ -349,7 +349,7 @@ $('ob2Go').addEventListener('click', () => {
   const who = $('obWho').textContent.trim(), what = $('obWhat').textContent.trim();
   if(!who || !what){ $('ob2Err').style.display = 'block'; (who ? $('obWhat') : $('obWho')).focus(); return; }
   $('ob2Err').style.display = 'none';
-  if(window.__editReturn){ window.__editReturn = false; $('ob3Go').click ? refreshCovenant() : null; obShow(4); }
+  if(window.__editReturn){ window.__editReturn = false; refreshCovenant(); obShow(4); }
   else obShow(3);
 });
 function refreshCovenant(){
