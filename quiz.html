@@ -185,6 +185,7 @@ footer a{text-decoration:underline; text-underline-offset:3px; color:var(--brass
       <div class="rowcta">
         <button class="cta" id="sGo">That&rsquo;s my sentence &mdash; continue <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M9 4l4 4-4 4" stroke="#1a1204" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button class="sb-skip" id="sSkip" type="button">I&rsquo;m not sure yet &mdash; let the questions help</button>
+        <button class="backq" id="sBack" type="button">&larr; Back</button>
       </div>
       <p class="sb-note" id="sNote" hidden>Name at least one of the two &mdash; or skip, and write it after your result.</p>
     </section>
@@ -355,7 +356,8 @@ function renderQ(){
     b.addEventListener('click', () => answer(i));
     box.appendChild(b);
   });
-  $('backBtn').hidden = cur === 0;
+  $('backBtn').hidden = false;
+  $('backBtn').innerHTML = cur === 0 ? '&larr; Back to your sentence' : '&larr; Previous question';
   $('progFill').style.width = ((cur) / Q.length * 100) + '%';
   $('progLabel').textContent = 'Question ' + (cur+1) + ' of ' + Q.length;
   showScreen('qScreen');
@@ -366,7 +368,11 @@ function answer(i){
   if(cur < Q.length - 1){ cur++; renderQ(); }
   else finish();
 }
-$('backBtn').addEventListener('click', () => { if(cur > 0){ cur--; renderQ(); } });
+$('backBtn').addEventListener('click', () => { if(cur > 0){ cur--; renderQ(); } else { showScreen('sScreen'); } });
+$('sBack').addEventListener('click', () => {
+  /* deep-linked from the landing hero? back means the landing page; otherwise the quiz intro */
+  if(location.hash === '#sentence'){ location.href = '/'; } else { showScreen('intro'); }
+});
 /* ---- sentence step ---- */
 const getNiche = () => { try{ return JSON.parse(localStorage.getItem('lampstand_niche')||'null'); }catch(_){ return null; } };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
