@@ -222,6 +222,7 @@ footer{text-align:center;padding:20px;font-size:12px;color:var(--flax-dim);posit
           <textarea id="wSpark" maxlength="300" placeholder="Optional — e.g. 'a friend told me she can't forgive herself'"></textarea>
           <button class="cta" id="wGen">Write today&rsquo;s script</button>
         </div>
+        <button class="ghost" id="aBackToday" style="display:none;margin-top:10px">&larr; Back to today&rsquo;s script</button>
         <div class="gen-wait" id="wWait"><span class="wick" aria-hidden="true"></span><span>Listening to your calling&hellip; writing in your voice&hellip;</span></div>
         <p class="err" id="wErr"></p>
       </div>
@@ -357,7 +358,10 @@ function refreshCovenant(){
   $('covSent').innerHTML = '&ldquo;God has called me to reach <b>' + esc(cleanWho($('obWho').textContent.trim())) + '</b> with the message of <b>' + esc($('obWhat').textContent.trim()) + '</b>.&rdquo;';
 }
 $('obEdit').addEventListener('click', () => { window.__editReturn = true; obShow(2); });
-$('ob2Back').addEventListener('click', () => obShow(1));
+$('ob2Back').addEventListener('click', () => {
+  if(window.__editReturn){ window.__editReturn = false; obShow(4); }
+  else obShow(1);
+});
 document.querySelectorAll('.vcard').forEach(c => c.addEventListener('click', () => {
   document.querySelectorAll('.vcard').forEach(x => x.classList.remove('sel'));
   c.classList.add('sel'); obVoice = c.dataset.v; $('ob3Go').disabled = false;
@@ -452,7 +456,8 @@ async function generate(){
   renderScript(todayScript);
 }
 $('wGen').addEventListener('click', generate);
-$('aNew').addEventListener('click', () => { $('wScript').style.display = 'none'; $('wEmpty').style.display = 'block'; $('wSpark').focus(); });
+$('aNew').addEventListener('click', () => { $('wScript').style.display = 'none'; $('wEmpty').style.display = 'block'; $('aBackToday').style.display = todayScript ? 'inline-block' : 'none'; $('wSpark').focus(); });
+$('aBackToday').addEventListener('click', () => { $('aBackToday').style.display = 'none'; renderScript(todayScript); });
 $('aCopy').addEventListener('click', async () => {
   const t = [$('bHook').textContent, $('bTension').textContent, $('bRev').textContent, $('bResp').textContent].join('\n\n');
   try{ await navigator.clipboard.writeText(t); $('aCopy').textContent = 'Copied ✓'; setTimeout(() => $('aCopy').textContent = 'Copy full script', 2000); }catch(_){}

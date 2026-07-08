@@ -55,4 +55,10 @@ footer{text-align:center;padding:22px;font-size:12px;color:var(--flax-dim)}
 <p>Sell the list. Rent the list. Attach your quiz result to advertising. Or email you more than the launch updates you signed up for. If any of this policy ever changes, the change will be announced to the list before it takes effect &mdash; not buried here.</p>
 <a class="cta" href="/">&larr; Back to Lampstand</a></main>
 <footer>&ldquo;You are the light of the world.&rdquo; &middot; &copy; 2026 Lampstand</footer>
+<script>
+/* back returns to the page you came from when it's ours; otherwise home */
+document.querySelectorAll('a.cta[href="/"]').forEach(a => a.addEventListener('click', e => {
+  if(document.referrer && document.referrer.startsWith(location.origin) && history.length > 1){ e.preventDefault(); history.back(); }
+}));
+</script>
 </body></html>
