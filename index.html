@@ -1028,9 +1028,16 @@ function maybeShowWatch(){
   let loaded = false;
   function arm(){
     if(loaded) return; loaded = true;
+    v.preload = 'auto';
     v.src = SRC;
-    v.addEventListener('canplay', () => { v.play().then(() => v.classList.add('on')).catch(() => v.remove()); }, { once:true });
+    v.load();
+    v.addEventListener('canplay', () => v.classList.add('on'), { once:true });
     v.addEventListener('error', () => v.remove(), { once:true });
+    v.play().catch(() => {
+      /* autoplay blocked: retry on first touch/click, else reveal SVG */
+      const retry = () => v.play().then(() => v.classList.add('on')).catch(() => v.remove());
+      window.addEventListener('pointerdown', retry, { once:true });
+    });
   }
   // start loading shortly after first paint so text renders instantly
   ('requestIdleCallback' in window) ? requestIdleCallback(arm, { timeout: 2500 }) : setTimeout(arm, 1200);
