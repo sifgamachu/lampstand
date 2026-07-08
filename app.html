@@ -93,6 +93,8 @@ label{display:block;font-size:12.5px;font-weight:600;color:var(--flax);margin:0 
 .beat p{font-size:15px;line-height:1.65;color:var(--papyrus);margin-top:7px}
 .beat.rev{background:linear-gradient(160deg,#fff,#FBF3DD)}
 .meta{display:flex;gap:14px;font-size:12.5px;color:var(--flax-dim);margin-top:14px}
+.fulltext{margin-top:22px;background:linear-gradient(160deg,#fff,#FBF3DD);border:1px solid var(--line);border-radius:16px;padding:clamp(22px,4vw,36px)}
+.fulltext p{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(19px,2.6vw,24px);line-height:1.75;color:var(--papyrus);white-space:pre-line}
 .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
 .act{background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 20px;font-size:13px;font-weight:600;color:var(--flax);cursor:pointer;transition:border .2s,color .2s}
 .act:hover{border-color:var(--lamp);color:var(--brass-deep)}
@@ -236,7 +238,12 @@ footer{text-align:center;padding:20px;font-size:12px;color:var(--flax-dim);posit
           <div class="beat"><h5>Response</h5><p id="bResp"></p></div>
         </div>
         <div class="meta"><span id="mWords"></span><span id="mSecs"></span></div>
+        <div class="fulltext" id="wFull" style="display:none">
+          <p id="fullText"></p>
+          <button class="ghost" id="aBeats" style="margin-top:14px">&larr; Back to the four beats</button>
+        </div>
         <div class="acts">
+          <button class="act" id="aFull">Read full script</button>
           <button class="act" id="aCopy">Copy full script</button>
           <button class="act" id="aRecorded">Mark recorded ✓</button>
           <button class="act" id="aNew">Write a different take</button>
@@ -459,9 +466,27 @@ async function generate(){
 $('wGen').addEventListener('click', generate);
 $('aNew').addEventListener('click', () => { $('wScript').style.display = 'none'; $('wEmpty').style.display = 'block'; $('aBackToday').style.display = todayScript ? 'inline-block' : 'none'; $('wSpark').focus(); });
 $('aBackToday').addEventListener('click', () => { $('aBackToday').style.display = 'none'; renderScript(todayScript); });
+const fullScriptText = () => [$('bHook').textContent, $('bTension').textContent, $('bRev').textContent, $('bResp').textContent].join('\n\n');
+$('aFull').addEventListener('click', () => {
+  const showing = $('wFull').style.display !== 'none';
+  $('wFull').style.display = showing ? 'none' : 'block';
+  document.querySelector('.beats').style.display = showing ? 'grid' : 'none';
+  $('aFull').textContent = showing ? 'Read full script' : 'Back to beats';
+  if(!showing){ $('fullText').textContent = fullScriptText(); $('wFull').scrollIntoView({behavior:'smooth', block:'nearest'}); }
+});
+$('aBeats').addEventListener('click', () => $('aFull').click());
 $('aCopy').addEventListener('click', async () => {
-  const t = [$('bHook').textContent, $('bTension').textContent, $('bRev').textContent, $('bResp').textContent].join('\n\n');
-  try{ await navigator.clipboard.writeText(t); $('aCopy').textContent = 'Copied ✓'; setTimeout(() => $('aCopy').textContent = 'Copy full script', 2000); }catch(_){}
+  const t = fullScriptText();
+  let ok = false;
+  try{ await navigator.clipboard.writeText(t); ok = true; }catch(_){
+    try{
+      const ta = document.createElement('textarea'); ta.value = t; ta.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(ta); ta.select(); ok = document.execCommand('copy'); ta.remove();
+    }catch(__){ ok = false; }
+  }
+  $('aCopy').textContent = ok ? 'Copied ✓' : 'Press Ctrl+C to copy';
+  if(!ok){ $('aFull').textContent === 'Read full script' && $('aFull').click(); const r = document.createRange(); r.selectNodeContents($('fullText')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+  setTimeout(() => $('aCopy').textContent = 'Copy full script', 2600);
 });
 $('aRecorded').addEventListener('click', async () => {
   if(!todayScript || !todayScript.id || todayScript.status !== 'draft') return;
