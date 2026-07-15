@@ -60,25 +60,22 @@ label{display:block;font-size:12.5px;font-weight:600;color:var(--flax);margin:0 
 .step-dot{height:4px;flex:1;border-radius:99px;background:var(--line);transition:background .3s}
 .step-dot.on{background:var(--lamp)}
 /* ===== "why we ask" teaching cards ===== */
-.why-float{position:fixed;right:26px;top:50%;transform:translateY(-50%);width:300px;border-radius:16px;padding:22px 22px 20px;z-index:40;animation:whyIn .5s cubic-bezier(.2,.8,.25,1), whyGlow 3.2s ease-in-out 1s infinite;
-  background:linear-gradient(var(--card),#FBF3DD) padding-box, linear-gradient(150deg,#E8B54B,#B05A32 55%,#6F8148) border-box;
-  border:2px solid transparent;
-  box-shadow:0 14px 42px -10px rgba(176,90,50,.35), 0 0 0 6px rgba(245,196,105,.14)}
+.why-float{position:fixed;right:26px;top:50%;transform:translateY(-50%);width:300px;background:linear-gradient(168deg,#FFFBEE,#FFF1CC 58%,#FCE6BC);border:none;border-radius:16px;padding:24px 20px 18px;box-shadow:0 16px 44px rgba(176,90,50,.22),0 0 0 2px var(--lamp);z-index:40;animation:whyIn .45s cubic-bezier(.2,.8,.25,1),whyGlow 3.6s ease-in-out 1s infinite;overflow:hidden}
+.why-float::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,var(--lamp) 0%,var(--terra) 55%,var(--olive) 100%)}
+@keyframes whyGlow{0%,100%{box-shadow:0 16px 44px rgba(176,90,50,.22),0 0 0 2px var(--lamp)}50%{box-shadow:0 18px 50px rgba(176,90,50,.34),0 0 0 3px var(--terra)}}
 @keyframes whyIn{from{opacity:0;transform:translateY(calc(-50% + 18px)) scale(.97)}to{opacity:1;transform:translateY(-50%) scale(1)}}
 @keyframes whyGlow{0%,100%{box-shadow:0 14px 42px -10px rgba(176,90,50,.35), 0 0 0 6px rgba(245,196,105,.14)}50%{box-shadow:0 14px 46px -8px rgba(176,90,50,.45), 0 0 0 10px rgba(245,196,105,.22)}}
-.why-ey{display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.16em;font-weight:700;color:#fff;text-transform:uppercase;margin:0 0 11px;background:linear-gradient(120deg,var(--terra),var(--lamp));border-radius:999px;padding:7px 13px;width:max-content;box-shadow:0 4px 12px -4px rgba(176,90,50,.5)}
+.why-ey{display:inline-block;font-size:10.5px;letter-spacing:.14em;font-weight:700;color:#FFF8EC;text-transform:uppercase;background:linear-gradient(120deg,var(--terra),#C96A3E);padding:5px 12px;border-radius:99px;margin:0 0 11px;box-shadow:0 3px 10px rgba(176,90,50,.35)}
 .why-ey::before{content:"🔥";font-size:12px;filter:saturate(1.1)}
 .why-bluf{font-family:'Fraunces',serif;font-weight:600;font-size:17px;line-height:1.4;margin:0 0 9px;background:linear-gradient(110deg,var(--terra),var(--brass-deep) 60%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--brass-deep)}
 .why-body{font-size:13px;line-height:1.65;color:var(--flax);margin:0 0 11px}
 .why-body b{color:var(--terra)}
-.why-ex{font-size:12.5px;line-height:1.6;color:#4a4226;background:linear-gradient(150deg,rgba(245,196,105,.32),rgba(111,129,72,.14));border-left:3px solid var(--olive);border-radius:9px;padding:10px 12px;margin:0}
+.why-ex{font-size:12.5px;line-height:1.6;color:var(--papyrus);background:linear-gradient(120deg,var(--lamp-soft),rgba(176,90,50,.10));border-left:3px solid var(--terra);border-radius:9px;padding:11px 13px;margin:0}
 .why-ex b{color:var(--terra)}
 .why-ex::before{content:"✦ ";color:var(--terra)}
-.why-inline{display:none;margin-top:16px;border-radius:14px;overflow:hidden;
-  background:linear-gradient(var(--card),#FBF3DD) padding-box, linear-gradient(150deg,#E8B54B,#B05A32 55%,#6F8148) border-box;
-  border:2px solid transparent;
-  box-shadow:0 10px 30px -12px rgba(176,90,50,.35)}
-.why-inline summary{cursor:pointer;list-style:none;padding:13px 16px;font-size:12.5px;font-weight:700;letter-spacing:.06em;color:#fff;background:linear-gradient(120deg,var(--terra),var(--lamp))}
+.why-inline{display:none;margin-top:16px;border:none;border-radius:13px;background:linear-gradient(168deg,#FFFBEE,#FFF1CC);box-shadow:0 8px 26px rgba(176,90,50,.16),0 0 0 2px var(--lamp);overflow:hidden;position:relative}
+.why-inline::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--lamp),var(--terra),var(--olive))}
+.why-inline summary{cursor:pointer;list-style:none;padding:14px 15px 11px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)}
 .why-inline summary::-webkit-details-marker{display:none}
 .why-inline summary::before{content:"🔥 ";}
 .why-inline[open] summary{border-bottom:0}
@@ -225,7 +222,7 @@ footer{text-align:center;padding:20px;font-size:12px;color:var(--flax-dim);posit
         <div class="rowcta"><button class="cta" id="ob4Go">Light my lampstand</button><button class="ghost" id="obEdit">Edit my sentence</button><button class="ghost" id="ob4Back">&larr; Back</button></div>
       </div>
 
-      <details class="why-inline" id="whyInline"><summary>Why we ask this</summary><div class="why-in" id="whyInlineBody"></div></details>
+      <details class="why-inline" open id="whyInline"><summary>Why we ask this</summary><div class="why-in" id="whyInlineBody"></div></details>
     </div>
     <aside class="why-float" id="whyFloat" aria-label="Why we ask this" hidden></aside>
   </section>
