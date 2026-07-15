@@ -60,16 +60,17 @@ label{display:block;font-size:12.5px;font-weight:600;color:var(--flax);margin:0 
 .step-dot{height:4px;flex:1;border-radius:99px;background:var(--line);transition:background .3s}
 .step-dot.on{background:var(--lamp)}
 /* ===== "why we ask" teaching cards ===== */
-.why-float{position:fixed;right:26px;top:50%;transform:translateY(-50%);width:290px;background:#FFFDF7;border:1px solid var(--line);border-left:3px solid var(--lamp);border-radius:14px;padding:20px 20px 18px;box-shadow:0 10px 34px rgba(26,22,14,.08);z-index:40;animation:whyIn .45s cubic-bezier(.2,.8,.25,1)}
+.why-float{position:fixed;right:26px;top:50%;transform:translateY(-50%);width:290px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--lamp);border-radius:14px;padding:20px 20px 18px;box-shadow:0 10px 34px rgba(26,22,14,.10);z-index:40;animation:whyIn .45s cubic-bezier(.2,.8,.25,1)}
 @keyframes whyIn{from{opacity:0;transform:translateY(calc(-50% + 14px))}to{opacity:1;transform:translateY(-50%)}}
 .why-ey{font-size:10.5px;letter-spacing:.14em;font-weight:700;color:var(--lamp);text-transform:uppercase;margin:0 0 8px}
-.why-bluf{font-family:'Fraunces',serif;font-weight:600;font-size:16.5px;line-height:1.4;margin:0 0 9px;color:var(--ink)}
-.why-body{font-size:13px;line-height:1.65;color:var(--ink-soft,#5a5347);margin:0 0 11px}
-.why-ex{font-size:12.5px;line-height:1.6;color:var(--ink-soft,#5a5347);background:rgba(184,134,44,.06);border-radius:9px;padding:10px 12px;margin:0}
-.why-ex b{color:var(--ink)}
-.why-ex::before{content:"✦ ";color:var(--lamp)}
-.why-inline{display:none;margin-top:16px;border:1px solid var(--line);border-left:3px solid var(--lamp);border-radius:12px;background:#FFFDF7}
-.why-inline summary{cursor:pointer;list-style:none;padding:12px 15px;font-size:12.5px;font-weight:600;color:var(--lamp)}
+.why-bluf{font-family:'Fraunces',serif;font-weight:600;font-size:16.5px;line-height:1.4;margin:0 0 9px;color:var(--papyrus)}
+.why-body{font-size:13px;line-height:1.65;color:var(--flax);margin:0 0 11px}
+.why-body b{color:var(--papyrus)}
+.why-ex{font-size:12.5px;line-height:1.6;color:var(--flax);background:var(--lamp-soft);border-radius:9px;padding:10px 12px;margin:0}
+.why-ex b{color:var(--papyrus)}
+.why-ex::before{content:"✦ ";color:var(--brass-deep)}
+.why-inline{display:none;margin-top:16px;border:1px solid var(--line);border-left:3px solid var(--lamp);border-radius:12px;background:var(--card)}
+.why-inline summary{cursor:pointer;list-style:none;padding:12px 15px;font-size:12.5px;font-weight:600;color:var(--brass-deep)}
 .why-inline summary::before{content:"✦ ";}
 .why-inline[open] summary{border-bottom:1px solid var(--line)}
 .why-inline .why-in{padding:13px 15px 15px}
