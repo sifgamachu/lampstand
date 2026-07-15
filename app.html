@@ -59,6 +59,21 @@ label{display:block;font-size:12.5px;font-weight:600;color:var(--flax);margin:0 
 .steps{display:flex;gap:6px;margin:26px 0 22px}
 .step-dot{height:4px;flex:1;border-radius:99px;background:var(--line);transition:background .3s}
 .step-dot.on{background:var(--lamp)}
+/* ===== "why we ask" teaching cards ===== */
+.why-float{position:fixed;right:26px;top:50%;transform:translateY(-50%);width:290px;background:#FFFDF7;border:1px solid var(--line);border-left:3px solid var(--lamp);border-radius:14px;padding:20px 20px 18px;box-shadow:0 10px 34px rgba(26,22,14,.08);z-index:40;animation:whyIn .45s cubic-bezier(.2,.8,.25,1)}
+@keyframes whyIn{from{opacity:0;transform:translateY(calc(-50% + 14px))}to{opacity:1;transform:translateY(-50%)}}
+.why-ey{font-size:10.5px;letter-spacing:.14em;font-weight:700;color:var(--lamp);text-transform:uppercase;margin:0 0 8px}
+.why-bluf{font-family:'Fraunces',serif;font-weight:600;font-size:16.5px;line-height:1.4;margin:0 0 9px;color:var(--ink)}
+.why-body{font-size:13px;line-height:1.65;color:var(--ink-soft,#5a5347);margin:0 0 11px}
+.why-ex{font-size:12.5px;line-height:1.6;color:var(--ink-soft,#5a5347);background:rgba(184,134,44,.06);border-radius:9px;padding:10px 12px;margin:0}
+.why-ex b{color:var(--ink)}
+.why-ex::before{content:"✦ ";color:var(--lamp)}
+.why-inline{display:none;margin-top:16px;border:1px solid var(--line);border-left:3px solid var(--lamp);border-radius:12px;background:#FFFDF7}
+.why-inline summary{cursor:pointer;list-style:none;padding:12px 15px;font-size:12.5px;font-weight:600;color:var(--lamp)}
+.why-inline summary::before{content:"✦ ";}
+.why-inline[open] summary{border-bottom:1px solid var(--line)}
+.why-inline .why-in{padding:13px 15px 15px}
+@media(max-width:1180px){.why-float{display:none}.why-inline{display:block}}
 .ob-sent{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(21px,4vw,28px);line-height:1.55;letter-spacing:-.01em;margin:22px 0 6px}
 .slot{border-bottom:2px solid var(--lamp);padding:0 3px 1px;color:var(--brass-deep);outline:none;transition:background .2s,border-color .2s;cursor:text;caret-color:var(--brass-deep)}
 .slot:focus{background:var(--lamp-soft);border-bottom-style:solid}
@@ -198,7 +213,10 @@ footer{text-align:center;padding:20px;font-size:12px;color:var(--flax-dim);posit
         <p class="err" id="ob4Err"></p>
         <div class="rowcta"><button class="cta" id="ob4Go">Light my lampstand</button><button class="ghost" id="obEdit">Edit my sentence</button><button class="ghost" id="ob4Back">&larr; Back</button></div>
       </div>
+
+      <details class="why-inline" id="whyInline"><summary>Why we ask this</summary><div class="why-in" id="whyInlineBody"></div></details>
     </div>
+    <aside class="why-float" id="whyFloat" aria-label="Why we ask this" hidden></aside>
   </section>
 
   <!-- ================= WORKSPACE ================= -->
@@ -274,7 +292,8 @@ const PATTERNS = {moses:'Moses', jeremiah:'Jeremiah', esther:'Esther', david:'Da
 let session = null, profile = null, calling = null, todayScript = null;
 
 /* ============ view router ============ */
-function show(v){ document.querySelectorAll('.view').forEach(x => x.classList.remove('on')); $(v).classList.add('on'); $('signOut').style.display = session ? 'block' : 'none'; window.scrollTo({top:0}); }
+function show(v){ const wf = document.getElementById('whyFloat'); if(wf) wf.hidden = (v !== 'vOnboard');
+  document.querySelectorAll('.view').forEach(x => x.classList.remove('on')); $(v).classList.add('on'); $('signOut').style.display = session ? 'block' : 'none'; window.scrollTo({top:0}); }
 
 async function route(){
   const { data: { session: s } } = await sb.auth.getSession();
@@ -324,11 +343,35 @@ $('signOut').addEventListener('click', async () => { await sb.auth.signOut(); lo
 
 /* ============ onboarding ============ */
 let obStep = 1, obVoice = null;
+/* "Why we ask" teaching cards — the BLUF first, then the why, then proof.
+   Every claim here is honest: real channels, real principles, our own story. */
+const WHY = {
+  1: { bluf: 'Faces and names grow faster than logos.',
+       body: 'On faith YouTube, people don\u2019t subscribe to content \u2014 they subscribe to a person they\u2019ve come to trust. Every script we write will be in <b>your</b> voice, so we start with who\u2019s speaking.',
+       ex: '<b>THE BEAT</b> works because it\u2019s Allen Parr \u2014 one person you feel you know by name. The most-shared Deep Bible Stories videos are the ones where the narrator feels like a friend.' },
+  2: { bluf: 'A channel aimed at everyone reaches no one. This sentence is the biggest growth decision you\u2019ll make.',
+       body: 'YouTube can only recommend a video when it can tell who it\u2019s for \u2014 and so can the person scrolling at 1am. A named <b>who</b> and a named <b>what</b> make every Short instantly legible. Every script we ever write you gets filtered through this one sentence.',
+       ex: '<b>Off The Kirb</b> speaks to skeptics. <b>Impact Video Ministries</b> teaches new believers. You can say who each is for in one line \u2014 that\u2019s why they grew. <b>Deep Bible Stories</b> reached 80 million views with one niche. Never two.' },
+  3: { bluf: 'People subscribe to a voice they recognize \u2014 often before they remember your face.',
+       body: 'If Monday sounds like a professor and Tuesday like a hype reel, viewers meet a different channel every day and never bond with any of them. Locking your register means every script sounds like <b>you on your clearest day</b> \u2014 recognizable in the first two seconds.',
+       ex: '<b>Allen Parr</b> never drops his direct-question energy. <b>The Bible Project</b> never breaks its calm-teacher tone. A recognizable voice is what turns a viewer into a subscriber.' },
+  4: { bluf: 'On Shorts, daily faithfulness beats occasional brilliance.',
+       body: 'The feed hands every upload a test audience \u2014 one Short a day is thirty chances a month for your people to find you. Most channels don\u2019t die from bad videos; they die from silence. The covenant guards against silence.',
+       ex: '<b>Deep Bible Stories</b> didn\u2019t go viral once \u2014 it lit the lamp daily until 80 million views accumulated. We bring the script. You bring the showing up.' }
+};
+function renderWhy(n){
+  const w = WHY[n]; if(!w) return;
+  const html = '<p class="why-ey">Why we ask this</p><p class="why-bluf">' + w.bluf + '</p><p class="why-body">' + w.body + '</p><p class="why-ex">' + w.ex + '</p>';
+  const f = $('whyFloat'), inl = $('whyInlineBody');
+  if(f){ f.hidden = false; f.innerHTML = html; f.style.animation = 'none'; void f.offsetHeight; f.style.animation = ''; }
+  if(inl){ inl.innerHTML = html; }
+}
 function obShow(n){
   obStep = n;
   for(let i=1;i<=4;i++) $('ob'+i).style.display = i===n ? 'block' : 'none';
   ['sd2','sd3','sd4'].forEach((id,i) => $(id).classList.toggle('on', n >= i+2));
   $('obTitle').innerHTML = ['What should we <em>call you?</em>','Say it <em>plainly.</em>','Find your <em>voice.</em>','The <em>covenant.</em>'][n-1];
+  renderWhy(n);
 }
 function prepOnboard(){
   let q = null, nch = null;

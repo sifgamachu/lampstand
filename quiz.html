@@ -60,6 +60,21 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 @keyframes rise{from{opacity:0; transform:translateY(18px)}to{opacity:1; transform:none}}
 
 .ey{font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--lamp); font-weight:600; margin-bottom:18px; display:flex; align-items:center; gap:10px}
+/* ===== "why we ask" teaching cards (dark) ===== */
+.why-float{position:fixed;right:26px;top:50%;transform:translateY(-50%);width:290px;background:rgba(252,248,236,.045);border:1px solid var(--line-soft);border-left:3px solid var(--lamp);border-radius:14px;padding:20px 20px 18px;box-shadow:0 12px 38px rgba(0,0,0,.28);backdrop-filter:blur(4px);z-index:40;animation:whyIn .45s cubic-bezier(.2,.8,.25,1)}
+@keyframes whyIn{from{opacity:0;transform:translateY(calc(-50% + 14px))}to{opacity:1;transform:translateY(-50%)}}
+.why-ey{font-size:10.5px;letter-spacing:.14em;font-weight:700;color:var(--lamp);text-transform:uppercase;margin:0 0 8px}
+.why-bluf{font-family:'Fraunces',serif;font-weight:600;font-size:16px;line-height:1.42;margin:0 0 9px;color:var(--ink)}
+.why-body{font-size:12.5px;line-height:1.65;color:var(--flax,#D8CBA4);margin:0 0 11px}
+.why-body b,.why-ex b{color:var(--ink)}
+.why-ex{font-size:12px;line-height:1.6;color:var(--flax,#D8CBA4);background:var(--lamp-soft);border-radius:9px;padding:10px 12px;margin:0}
+.why-ex::before{content:"✦ ";color:var(--lamp)}
+.why-inline{display:none;margin-top:16px;border:1px solid var(--line-soft);border-left:3px solid var(--lamp);border-radius:12px;background:rgba(252,248,236,.035)}
+.why-inline summary{cursor:pointer;list-style:none;padding:12px 15px;font-size:12.5px;font-weight:600;color:var(--lamp)}
+.why-inline summary::before{content:"✦ "}
+.why-inline[open] summary{border-bottom:1px solid var(--line-soft)}
+.why-inline .why-in{padding:13px 15px 15px}
+@media(max-width:1180px){.why-float{display:none}.why-inline{display:block}}
 .ey::before{content:""; width:26px; height:1px; background:var(--brass-deep)}
 h1,.qh{font-family:'Fraunces',serif; font-weight:500; letter-spacing:-.015em; line-height:1.12}
 h1{font-size:clamp(30px,5.5vw,46px)}
@@ -161,6 +176,7 @@ footer a{text-decoration:underline; text-underline-offset:3px; color:var(--brass
   <p class="prog-cap"><span id="progLabel">Question 1 of 7</span><span>No wrong answers</span></p>
 </div>
 
+<aside class="why-float" id="whyFloat" aria-label="Why we ask this" hidden></aside>
 <main class="stage">
   <div class="card">
 
@@ -188,6 +204,7 @@ footer a{text-decoration:underline; text-underline-offset:3px; color:var(--brass
         <button class="backq" id="sBack" type="button">&larr; Back</button>
       </div>
       <p class="sb-note" id="sNote" hidden>Name at least one of the two &mdash; or skip, and write it after your result.</p>
+      <details class="why-inline"><summary>Why we ask this</summary><div class="why-in" id="whyInlineS"></div></details>
     </section>
 
     <!-- question -->
@@ -196,6 +213,7 @@ footer a{text-decoration:underline; text-underline-offset:3px; color:var(--brass
       <p class="hint" id="qHint"></p>
       <div class="opts" id="qOpts" role="group"></div>
       <button class="backq" id="backBtn" hidden>&larr; Previous question</button>
+      <details class="why-inline"><summary>Why we ask this</summary><div class="why-in" id="whyInlineQ"></div></details>
     </section>
 
     <!-- result -->
@@ -335,14 +353,53 @@ const track = (ev, d) => { try{ (window.dataLayer = window.dataLayer||[]).push({
 let cur = -1, answers = [], scores = {};
 
 function reset(){ cur = -1; answers = []; scores = {}; for(const k in P) scores[k]=0; }
+/* "Why we ask" teaching cards — BLUF, the why, then proof. Honest claims only. */
+const WHY_S = { bluf: 'Naming your calling out loud is the first act of ministry.',
+  body: 'Vague callings make vague channels. A named <b>who</b> and <b>what</b> is the single clearest predictor that a faith channel finds its people \u2014 it\u2019s how viewers (and YouTube) instantly know a video is for them.',
+  ex: '<b>Deep Bible Stories</b> reached 80 million views with one niche, never two. The questions ahead will sharpen the sentence you write here.' };
+const WHY_Q = [
+  { bluf: 'Your first stirring is your content engine.',
+    body: 'What stirs <b>you</b> is what you can make a Short about every day without burning out. Channels built on borrowed fire go quiet by week three; channels built on a real burden are self-refueling.',
+    ex: '<b>Off The Kirb</b> runs on one man\u2019s burden for skeptics \u2014 years of daily output from a single stirring. We\u2019re finding yours.' },
+  { bluf: 'Your hesitation predicts your quitting point \u2014 so we design around it from day one.',
+    body: 'Every creator hits the wall of their own doubt. Knowing yours means your scripts, beats, and pace get shaped to carry you <b>past</b> it \u2014 and Scripture answered each of these hesitations by name.',
+    ex: '<b>Moses</b> hated his own voice; God sent him anyway \u2014 with Aaron and a staff. Your pattern comes with its answer built in. That\u2019s why this one counts double.' },
+  { bluf: 'Your natural role in a room is your on-camera format.',
+    body: 'The planner thrives on series. The encourager thrives speaking to one hurting person. When format matches instinct, the camera feels easy \u2014 mismatch is why so many channels feel forced.',
+    ex: 'Nehemiah-types grow with <b>series</b> \u2014 one wall, rebuilt one sixty-second brick a day. That\u2019s literally how we\u2019ll structure your pipeline.' },
+  { bluf: 'Your audience isn\u2019t chosen. It\u2019s revealed.',
+    body: 'The people you already ache for are the ones who\u2019ll feel <b>seen</b> by your videos \u2014 and feeling seen is what makes someone follow, comment, and come back. \u201cEveryone\u201d is not an audience.',
+    ex: '<b>Impact Video Ministries</b> aches for new believers \u2014 every topic, thumbnail, and word follows from that one clarity.' },
+  { bluf: 'How you handle being seen shapes how you\u2019ll handle growth.',
+    body: 'Visibility is part of the job \u2014 and your reflex when praised (deflect it, carry it, credit others) tells us how to coach you when the views come, and when they don\u2019t.',
+    ex: '<b>Barnabas</b>-types deflect praise \u2014 and their channels grow precisely by lifting others. The reflex isn\u2019t a flaw; it\u2019s the strategy.' },
+  { bluf: 'This is literally your script style.',
+    body: 'Testimony, reframing question, plain word, or step-by-step build \u2014 your daily scripts get written in the style you <b>already</b> use, because borrowed styles read fake on camera within seconds.',
+    ex: 'Paul-types testify. Deborah-types declare. <b>Both work</b> \u2014 copied from someone else, neither does.' },
+  { bluf: 'Your definition of success sets your survival strategy.',
+    body: 'If one saved life is success, comments will carry you through slow weeks. If faithfulness is success, streaks will. Channels rarely quit from failure \u2014 they quit from measuring the wrong thing.',
+    ex: '<b>80 million views</b> is what accumulated faithfulness looks like from the inside: one lamp, lit daily, for years.' }
+];
+function renderWhy(w){
+  if(!w) return;
+  const html = '<p class="why-ey">Why we ask this</p><p class="why-bluf">' + w.bluf + '</p><p class="why-body">' + w.body + '</p><p class="why-ex">' + w.ex + '</p>';
+  const f = $('whyFloat');
+  if(f){ f.hidden = false; f.innerHTML = html; f.style.animation = 'none'; void f.offsetHeight; f.style.animation = ''; }
+  const s = $('whyInlineS'), q = $('whyInlineQ');
+  if(s) s.innerHTML = html;
+  if(q) q.innerHTML = html;
+}
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
   const el = $(id); el.classList.add('on');
   $('progWrap').hidden = id !== 'qScreen';
+  if(id === 'sScreen'){ renderWhy(WHY_S); }
+  else if(id !== 'qScreen'){ const f = $('whyFloat'); if(f) f.hidden = true; }
   window.scrollTo({top:0, behavior:'auto'});
 }
 function renderQ(){
   const q = Q[cur];
+  renderWhy(WHY_Q[cur]);
   $('qTitle').textContent = q.t;
   let hint = q.h;
   if(cur === 0){ const n = getNiche(); if(n && n.who){ hint = (q.h ? q.h + ' ' : '') + 'Hold the people you named in mind: \u201c' + n.who + '\u201d.'; } }
